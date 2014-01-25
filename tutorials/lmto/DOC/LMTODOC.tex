@@ -1,0 +1,2804 @@
+\documentclass[aps,twocolumn,a4]{revtex4}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                          %
+% Compile with LATEX2e and the Revtex macros version 3.0   %
+%                                                          %
+% If you cannot print this in a reasonable way send me an  %
+% e-mail: jepsen@and.mpi-stuttgart.mpg.de                  %
+% and I will mail it to you.                               %
+%                                                          %
+%         Ove Jepsen MPI-FKF              July 1st. 1998   %
+%                                                          %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\renewcommand{\thepage}{\roman{page}}
+\title{The STUTTGART TB-LMTO-ASA program.}
+\author{ R. W. Tank, O. Jepsen, and O. K. Andersen.}
+\address{Max-Planck-Institut f\"ur
+Festk\"orperforschung, Heisenbergstr. 1,\\D-70569 Stuttgart,
+Federal Republic of Germany .}
+
+\begin{abstract}
+This document describes how to install and run the
+TB-LMTO program version 47 under UNIX.
+
+The development of this program has been managed by Ole Krogh Andersen;
+the first version was constructed mostly by
+Mark van Schilfgaarde during 1987-88.
+Over the years the following people (in alphabetic order) have written,
+corrected or made additions to the
+program: Vladimir Antonov, Peter Braun,
+Armin Burkhardt, Volker Eyert, Georges Krier,
+Toni A. Paxton, Andrei Postnikov, Andreas Savin.
+The latest major
+revisions and additions are due to the people below the title.
+
+This document was written by Ove Jepsen. Questions or comments
+should be directed to him (jepsen@and.mpi-stuttgart.mpg.de).
+
+For use of this program see the License
+agreement in Section \ref{license}.
+
+Version 47 was last updated September 1998.
+
+This documentation was written in \LaTeX 2e and can be printed with
+version 3.0 of the REVTEX macros.
+
+The linear muffin-tin orbital (LMTO) method has been described in
+numerous publications. For a description of the LMTO
+method in general see Ref. 1, the tight-binding (TB)
+version see Ref. 2, the down-folding technique Ref. 3,
+the tetrahedron method Ref. 4, accuracy using overlapping spheres
+Ref. 5, and a detailed example Ref. 6.
+Some useful books are also worth mentioning:
+{\it The Mathematical Theory of Symmetry in Solids}, Ref. 7,
+contains among other things all the Brillouin zones, {\it
+International Tables for Crystallography}, Ref. 8, contains all
+crystallographic space groups and {\it Pearson's Handbook of
+Crystallographic Data for Intermetallic phases}, Ref. 9, contains
+structural
+data for many compounds and elements.
+\end{abstract}
+\maketitle
+%\twocolumn
+\nopagebreak
+\tableofcontents
+\renewcommand{\thepage}{\arabic{page}}
+\setcounter{page}{1}
+%\input{install}
+\section{Installation of the TB-LMTO programs}
+\label{install}
+The source code is compressed on
+the distribution diskette from where this documentation was down-loaded.
+
+The uncompression, creation of directories, and copying to directories
+is done automatically as described in the READ.ME file
+on the distribution disk. This can be done under MS-DOS or UNIX.
+
+The GNUPLOT graphical package on the distribution diskette can be
+used for all plots, see Section \ref{plot}.
+
+Options are provided for creation of plot data files appropriate for
+IBM Visualization Data Explorer version 2, which is available for
+IBM, Sun, HP, and SGI machines.
+
+The path name in the {\em makefile} and in all files with the extension
+{\em .exec} in the lmto47 directory
+(hereafter called the main directory, and directories one level
+below this will be called subdirectories) has to be
+changed to the appropriate name. Furthermore, the path name in
+{\em getmain} and in {\em getmakefile} in the main
+directory should also be changed.
+Typing `make all' will then compile
+and link all programs according to the rules in the {\em makefile}.
+%\input{execute}
+\section{Execution of the TB-LMTO programs}
+\label{execute}
+
+\begin{enumerate}
+\item The basic input data is inserted in the CTRL file.
+The CTRL file shown below contains the minimum amount of
+information to be typed, in order to run the TB-LMTO programs. The rest
+may be obtained from the default values in the program, which are
+written into the CTRL file by the program.
+\begin{verbatim}
+HEADER  NiSe2 Pyrit (Acta Chem. Scand.
+                     v. 23 p. 2325 1969)
+VERS    LMASA-47
+STRUC   ALAT=11.2683
+        PLAT=1 0 0
+             0 1 0
+             0 0 1
+CLASS   ATOM=NI Z=28
+        ATOM=Se Z=34
+SITE    ATOM=NI POS= .0  .0  .0
+        ATOM=NI POS= .5  .0  .5
+        ATOM=NI POS= .0  .5  .5
+        ATOM=NI POS= .5  .5  .0
+        ATOM=Se POS= .383  .383  .383
+        ATOM=Se POS= .617  .617  .617
+        ATOM=Se POS= .117  .617  .883
+        ATOM=Se POS= .883  .383  .117
+        ATOM=Se POS= .617  .883  .117
+        ATOM=Se POS= .383  .117  .883
+        ATOM=Se POS= .883  .117  .617
+        ATOM=Se POS= .117  .883  .383
+\end{verbatim}
+
+The input consists of tokens, like ATOM= or Z=. These are grouped
+together in categories, like CLASS. The name of a category always
+starts in the first column of a
+line. This will be explained in detail in Section \ref{categ}.
+ALAT= is a lattice constant in a.u. (i.e. Bohr radii),
+PLAT= are the lattice
+translation vectors and POS= are the atomic positions. The latter two
+are in Cartesian coordinates and in units of ALAT.
+
+All Ni atoms and all Se atoms are equivalent i.e. there are two
+classes. From the information in the CTRL file, the program will find
+the symmetry i.e. all space group operations and the generators of the
+space group.  If the symmetry of the bravais lattice is incompatible
+with the symmetry of the basis, then the symmetry of the bravais
+lattice is used.
+Alternatively to the CTRL file above,
+the symmetry generators and only one of each of
+the inequivalent atoms could have been given. The program will complete
+the basis:
+\begin{verbatim}
+HEADER  NiSe2 Pyrit (Acta Chem. Scand.
+                     v. 23 p. 2325 1969)
+VERS    LMASA-47
+STRUC   ALAT=11.2683
+        PLAT=1 0 0
+             0 1 0
+             0 0 1
+CLASS   ATOM=NI Z=28
+        ATOM=Se Z=34
+SITE    ATOM=NI POS= .0  .0  .0
+        ATOM=Se POS= .383  .383  .383
+SYMGRP  NGEN=3 GENGRP=I R3D MX:(.5,.5,0)
+\end{verbatim}
+
+The category SYMGRP contains three tokens: NGEN= the number of
+generators supplied,\\
+GENGRP= the names of the generators as defined in
+the Subsection `Category SYMGRP'.
+
+A third possibility is to use the interactive program
+{\em lminit.run} in the main directory. An example
+is shown below, where the user's answer
+to the query is indicated by the string after `--$>$' and followed
+by `(Answer)'.
+\begin{verbatim}
+
+| QUERY : SPCGRP:
+|         SYMBOL OR NUMBER OF SPACE GROUP
+|
+| Enter: 'nnn', nnn is the value for SPCGRP,
+|         'a' to abort program execution.
+|        ->205 (Answer)
+
+  Space group: Pa-3       No.:205
+  Crystal system: cubic
+  Generators: I R3D MX::(1/2,1/2,0)
+
+| QUERY :  atomic-units ? (else in Angstrom)
+|
+| Enter: 'nnn', nnn is the value for ATUNITS,
+|               default value=T
+|         'a' to abort program execution.
+|         '/' to accept default value
+|        ->/
+
+   Now enter lattice parameters
+
+| QUERY : A:lattice constant (atomic units)
+|
+| Enter: 'nnn', nnn is the value for A,
+|         'a' to abort program execution.
+|        ->11.2683 (Answer)
+
+ CTRLUC:             PLAT   ALAT=11.2683
+        1.00000    .00000    .00000
+         .00000   1.00000    .00000
+         .00000    .00000   1.00000
+
+| QUERY: label or nuclear charge of class 1
+|
+| Enter: 'nnn', nnn is the value for label,
+|         'a' to abort program execution.
+|         'q' to quit
+|        ->28 (Answer)
+
+ Class: Ni  ; nuclear charge 28 (atom Ni)
+
+| QUERY: X = position of Ni (in units of the
+|         translation vectors a, b, c)
+|
+| Enter: 'nnn', nnn is the value for X,
+|               default value=0. 0. 0.
+|         'a' to abort program execution.
+|         '/' to accept default value
+|        ->/ (Answer)
+
+| QUERY: label or nuclear charge of class 2
+|
+| Enter: 'nnn', nnn is the value for label,
+|         'a' to abort program execution.
+|         'q' to quit
+|        ->34  (Answer)
+
+ Class: Se  ; nuclear charge 34 (atom Se)
+
+| QUERY : X = position of Se
+|
+| Enter: 'nnn', nnn is the value for X,
+|               default value=0. 0. 0.
+|         'a' to abort program execution.
+|         '/' to accept default value
+|        ->.383 .383 .383
+
+| QUERY: label or nuclear charge of class 3
+|
+| Enter: 'nnn', nnn is the value for label,
+|         'a' to abort program execution.
+|         'q' to quit
+|        ->q  (Answer)
+
+ CHKSYM: Check the symmetry of the crystal:
+
+ GENGRP: A subgroup of the space group will
+	 be created from 3 generators
+         The generators created 24 sym. ops.
+
+ ADDBAS: The basis has been extended from
+	 2 to  12 atoms.
+         The new positions are:
+
+      ATOM=Ni   POS=    .500   .500   .000
+      ATOM=Ni   POS=    .000   .500   .500
+      ATOM=Ni   POS=    .500   .000   .500
+      ATOM=Se   POS=   -.383  -.383  -.383
+      ATOM=Se   POS=    .117   .883   .383
+      ATOM=Se   POS=    .883   .117  -.383
+      ATOM=Se   POS=    .383   .117   .883
+      ATOM=Se   POS=    .883   .383   .117
+      ATOM=Se   POS=   -.383   .883   .117
+      ATOM=Se   POS=    .117  -.383   .883
+
+ SYMLAT: lattice invariant under 48 sym. ops.
+
+ SYMCRY: crystal invariant under 24 sym. ops.
+
+ SHOSYM: Bravais system : cubic
+         Bravais lattice: cubic primitive
+         Centring type  : P
+         Crystal family : cubic
+         Crystal system : cubic
+         Point group    : m-3
+
+\end{verbatim}
+
+The resulting CTRL file looks like this:
+\begin{verbatim}
+HEADER    Ni4Se8, cubic primitive
+SYMGRP    NGEN=3 GENGRP=I R3D MX:(.5,.5,0)
+          SPCGRP=Pa-3
+STRUC     ALAT=11.2683
+          PLAT=1 0 0
+               0 1 0
+               0 0 1
+CLASS     ATOM=Ni Z=28
+          ATOM=Se Z=34
+SITE      ATOM=Ni POS=0.000 0.000 0.000
+          ATOM=Ni POS=0.500 0.500 0.000
+          ATOM=Ni POS=0.500 0.000 0.500
+          ATOM=Ni POS=0.000 0.500 0.500
+          ATOM=Se POS=0.383 0.117 -.117
+          ATOM=Se POS=-.383 -.117 0.117
+          ATOM=Se POS=-.117 0.383 0.117
+          ATOM=Se POS=0.117 -.383 -.117
+          ATOM=Se POS=0.117 -.117 0.383
+          ATOM=Se POS=-.117 0.117 -.383
+          ATOM=Se POS=0.383 0.383 0.383
+          ATOM=Se POS=-.383 -.383 -.383
+\end{verbatim}
+
+\item The next step is to find the size of the atomic spheres.
+First muffin-tin (MT) radii are found by {\em lmhart.run} and inserted
+into the CTRL file. The result of this run is shown below.
+\begin{verbatim}
+HEADER    Ni4Se8, cubic primitive
+VERS      LMASA-47
+IO        VERBOS=30 OUTPUT=LM ERR=ERR
+SYMGRP    NGEN=3 GENGRP=I R3D MX:(.5,.5,0)
+          SPCGRP=Pa-3
+STRUC     ALAT=11.2683
+          PLAT=1 0 0
+               0 1 0
+               0 0 1
+DIM       NBAS=12 NCLASS=2 NL=3 LDIM=68
+	  IDIM=40 NSYMOP=24
+CLASS     ATOM=Ni Z=28 R=2.41776510
+          ATOM=Se Z=34 R=2.28352037
+SITE      ATOM=Ni POS=0.000 0.000 0.000
+          ATOM=Ni POS=0.500 0.500 0.000
+          ATOM=Ni POS=0.500 0.000 0.500
+          ATOM=Ni POS=0.000 0.500 0.500
+          ATOM=Se POS=0.383 0.117 -.117
+          ATOM=Se POS=-.383 -.117 0.117
+          ATOM=Se POS=-.117 0.383 0.117
+          ATOM=Se POS=0.117 -.383 -.117
+          ATOM=Se POS=0.117 -.117 0.383
+          ATOM=Se POS=-.117 0.117 -.383
+          ATOM=Se POS=0.383 0.383 0.383
+          ATOM=Se POS=-.383 -.383 -.383
+\end{verbatim}
+
+The two tokens (R=) with the MT-radii in a.u. have been
+inserted in category CLASS. Furthermore, a new class, IO, has been
+inserted with the tokens: VERBOS= which specifies the amount of
+output the programs print and the number of default tokens which will
+be inserted in the CTRL file by the programs which updates the CTRL
+file, OUTPUT= which gives a file name to which standard out will be
+directed, ERR= which gives a file name to which error messages will
+be directed.
+
+\item The overlap between the WS-spheres is checked by the
+{\em lmovl.run} program. 
+The result written to standard out
+looks like (the output has been edited to fit into this
+documentation):
+\begin{verbatim}
+Info: impossible to reach VOL, increase OMMAX.
+
+CELL VOLUME= 1430.78771,
+SUM OF SPHERE VOLUMES=   992.45473
+
+IB JB  CL1  CL2  DIST SUMRS  1/d 1/s1 1/s2
+==========================================
+ 1  5  Ni   Se    .42 .48    16  27   28
+------------------------------------------
+ 5  1  Se   Ni    .42 .48    16  28   27
+ 5  6  Se   Se    .41 .47    16  28   28
+------------------------------------------
+
+\end{verbatim}
+
+The first line tells that space filling could not be reached with the
+default maximum overlaps (two atomic spheres are allowed to overlap
+no more than 16\% in the sence of 1/d below, max. overlap between
+an atomic and an
+interstitial sphere is 18\%, and max. overlap between two
+interstitial spheres is 20\%).
+
+The next two lines show the cell volume and the volume inside the
+expanded spheres.
+
+In the table,
+each line displays two neighboring atoms with WS-radii s1 and s2, and
+the distance between them d. Under `1/d', `1/s1', and `1/s2' are the
+results of $s1+s2-d \over d$, $s1+s2-d \over s1$, and
+ $s1+s2-d \over s2$, respectively, in percent.
+If the two sphere radii are very much different, one should check
+`1/s1', where s1 is the smallest radius. (A big sphere may swallow a
+small sphere.)
+
+Since in the present case space filling could not be reached,
+interstitial spheres have to be inserted.
+
+\item Interstitial spheres are found by the {\em lmes.run} program.
+The resulting CTRL file is shown below. 
+\begin{verbatim}
+HEADER Ni4Se8, cubic primitive
+VERS   LMASA-47
+IO     VERBOS=30 OUTPUT=OVL ERR=ERR
+SYMGRP NGEN=3 GENGRP=I R3D MX:(.5,.5,0)
+       SPCGRP=Pa-3
+STRUC  ALAT=11.2683
+       PLAT=1 0 0
+            0 1 0
+            0 0 1
+DIM    NBAS=36 NCLASS=3 NL=3 LDIM=68
+       IDIM=40 NSYMOP=24
+CLASS  ATOM=Ni Z=28 R=2.41776510
+       ATOM=Se Z=34 R=2.28352037
+       ATOM=E  Z= 0 R=1.53150056
+SITE   ATOM=Ni POS=0.00000 0.00000 0.00000
+       ATOM=Ni POS=0.50000 0.50000 0.00000
+       ATOM=Ni POS=0.50000 0.00000 0.50000
+       ATOM=Ni POS=0.00000 0.50000 0.50000
+       ATOM=Se POS=0.38300 0.11700 -.11700
+       ATOM=Se POS=-.38300 -.11700 0.11700
+       ATOM=Se POS=-.11700 0.38300 0.11700
+       ATOM=Se POS=0.11700 -.38300 -.11700
+       ATOM=Se POS=0.11700 -.11700 0.38300
+       ATOM=Se POS=-.11700 0.11700 -.38300
+       ATOM=Se POS=0.38300 0.38300 0.38300
+       ATOM=Se POS=-.38300 -.38300 -.38300
+       ATOM=E  POS=0.28510 -.18060 0.09608
+       ATOM=E  POS=-.28510 0.18060 -.09608
+       ATOM=E  POS=0.09608 0.28510 -.18060
+       ATOM=E  POS=-.09608 -.28510 0.18060
+       ATOM=E  POS=0.18060 -.09608 -.28510
+       ATOM=E  POS=-.18060 0.09608 0.28510
+       ATOM=E  POS=0.31939 0.09608 0.21489
+       ATOM=E  POS=0.21489 0.31939 0.09608
+       ATOM=E  POS=-.31939 -.09608 -.21489
+       ATOM=E  POS=-.21489 -.31939 -.09608
+       ATOM=E  POS=0.09608 0.21489 0.31939
+       ATOM=E  POS=-.09608 -.21489 -.31939
+       ATOM=E  POS=0.40391 -.21489 -.18060
+       ATOM=E  POS=-.40391 0.21489 0.18060
+       ATOM=E  POS=-.18060 0.40391 -.21489
+       ATOM=E  POS=0.18060 -.40391 0.21489
+       ATOM=E  POS=0.21489 0.18060 -.40391
+       ATOM=E  POS=-.21489 -.18060 0.40391
+       ATOM=E  POS=0.40391 -.28510 0.31939
+       ATOM=E  POS=0.31939 0.40391 -.28510
+       ATOM=E  POS=-.40391 0.28510 -.31939
+       ATOM=E  POS=-.31939 -.40391 0.28510
+       ATOM=E  POS=-.28510 0.31939 0.40391
+       ATOM=E  POS=0.28510 -.31939 -.40391
+\end{verbatim}
+
+The program found 24 interstitial spheres, all equivalent, with a sphere
+radius between 0.9 and 4.0 a.u. These limits are default and can be
+changed. Notice that a new category DIM has been inserted, which
+contain information about some dimensions.
+
+\item Check the overlap again with {\em lmovl.run}. Standard out now
+looks like:
+\begin{verbatim}
+
+IB  JB  CL1  CL2 DIST SUMRS 1/d 1/s1 1/s2
+=========================================
+ 1   5  NI   Se  .42  .47    13  22   23
+ 1  20  NI   E1  .35  .40    13  18   29
+-----------------------------------------
+ 5   1  Se   NI  .42  .47    13  23   22
+ 5   6  Se   Se  .41  .46    13  23   23
+ 5  14  Se   E1  .34  .38    13  19   28
+ 5  15  Se   E1  .38  .38     1   1    2
+ 5  17  Se   E1  .34  .38    13  19   28
+ 5  22  Se   E1  .34  .38    13  19   28
+ 5  23  Se   E1  .34  .38    13  19   28
+ 5  29  Se   E1  .38  .38     1   1    2
+ 5  31  Se   E1  .34  .38    13  19   28
+ 5  34  Se   E1  .34  .38    13  19   28
+ 5  35  Se   E1  .38  .38     1   1    2
+ 5  36  Se   E1  .34  .38    13  19   28
+-----------------------------------------
+13   2  E1   NI  .35  .40    13  29   18
+13   6  E1   Se  .34  .38    13  28   19
+13   7  E1   Se  .38  .38     1   2    1
+13   8  E1   Se  .34  .38    13  28   19
+13  12  E1   Se  .34  .38    13  28   19
+13  15  E1   E1  .27  .31    12  21   21
+13  25  E1   E1  .30  .31     1   2    2
+-----------------------------------------
+\end{verbatim}
+
+The program found space filling with a
+maximum overlap of 13\% which is fine and one can proceed.
+
+\item Complete the CTRL file with the {\em lmctl.run} program, but first
+change the token VERBOS= to 50 in category IO to ensure that all
+default values are inserted.
+\begin{verbatim}
+HEADER  Ni4Se8, cubic primitive
+VERS    LMASA-47
+IO      VERBOS=50 HELP=F WKP=F IACTIV=F
+        ERRTOL=2 OUTPUT=CTL ERR=ERR
+SYMGRP  NGEN=3 GENGRP=I R3D MX:(.5,.5,0)
+        SPCGRP=Pa-3 USESYM=F
+STRUC   ALAT=11.2683
+        PLAT=1 0 0
+             0 1 0
+             0 0 1 FIXLAT=T
+DIM     NBAS=36 NCLASS=3 NL=3 LDIM=92
+        IDIM=232 NSYMOP=24 NKP=11
+OPTIONS NSPIN=1 REL=T CCOR=T NONLOC=F
+        NRXC=1 NRMIX=2 CORDRD=F
+        NITATOM=30 CHARGE=F FATBAND=F AFM=F
+        FS=F CARTESIAN=T WRIBAS=F Q=----
+CLASS   ATOM=Ni Z=28 R=2.72719158 LMX=2
+        CONF=4 4 3 4 IDXDN=1 1 1 IDMOD=0 0 0
+        ATOM=Se Z=34 R=2.57576616 LMX=2
+        CONF=4 4 4 4 IDXDN=1 1 2 IDMOD=0 0 0
+        ATOM=E  Z= 0 R=1.72750257 LMX=2
+        CONF=1 2 3 4 IDXDN=1 2 2 IDMOD=0 0 0
+SITE    ATOM=Ni POS=0.00000 0.00000 0.0000
+        ATOM=Ni POS=0.50000 0.50000 0.0000
+        ATOM=Ni POS=0.50000 0.00000 0.5000
+        ATOM=Ni POS=0.00000 0.50000 0.5000
+        ATOM=Se POS=0.38300 0.11700 -.1170
+        ATOM=Se POS=-.38300 -.11700 0.1170
+        ATOM=Se POS=-.11700 0.38300 0.1170
+        ATOM=Se POS=0.11700 -.38300 -.1170
+        ATOM=Se POS=0.11700 -.11700 0.3830
+        ATOM=Se POS=-.11700 0.11700 -.3830
+        ATOM=Se POS=0.38300 0.38300 0.3830
+        ATOM=Se POS=-.38300 -.38300 -.3830
+        ATOM=E  POS=0.28510 -.18060 0.0960
+        ATOM=E  POS=-.28510 0.18060 -.0960
+        ATOM=E  POS=0.09608 0.28510 -.1806
+        ATOM=E  POS=-.09608 -.28510 0.1806
+        ATOM=E  POS=0.18060 -.09608 -.2851
+        ATOM=E  POS=-.18060 0.09608 0.2851
+        ATOM=E  POS=0.31939 0.09608 0.2148
+        ATOM=E  POS=0.21489 0.31939 0.0960
+        ATOM=E  POS=-.31939 -.09608 -.2148
+        ATOM=E  POS=-.21489 -.31939 -.0960
+        ATOM=E  POS=0.09608 0.21489 0.3193
+        ATOM=E  POS=-.09608 -.21489 -.3193
+        ATOM=E  POS=0.40391 -.21489 -.1806
+        ATOM=E  POS=-.40391 0.21489 0.1806
+        ATOM=E  POS=-.18060 0.40391 -.2148
+        ATOM=E  POS=0.18060 -.40391 0.2148
+        ATOM=E  POS=0.21489 0.18060 -.4039
+        ATOM=E  POS=-.21489 -.18060 0.4039
+        ATOM=E  POS=0.40391 -.28510 0.3193
+        ATOM=E  POS=0.31939 0.40391 -.2851
+        ATOM=E  POS=-.40391 0.28510 -.3193
+        ATOM=E  POS=-.31939 -.40391 0.2851
+        ATOM=E  POS=-.28510 0.31939 0.4039
+        ATOM=E  POS=0.28510 -.31939 -.4039
+SCALE   SCLWSR=T OMMAX1=.16 .18 .20
+        OMMAX2=.40 .45 .50
+STR     KAPPA2=0 RMAXS=3.2 NDIMIN=350
+        NOCALC=F IALPHA=0
+        DOWATS=F DELTR=.1 LMAXW=8
+        ATOM=Ni SIGMA=.7 .7 .7
+        ATOM=Se SIGMA=.7 .7 .7
+        ATOM=E  SIGMA=.7 .7 .7
+START   NIT=30 BROY=T WC=-1 NMIX=1 BETA=.5
+        FREE=F CNVG=.00001 CNVGET=.00001
+        BEGMOM=T CNTROL=T
+        EFERMI=-.25 VMTZ=-.75
+        ATOM=Ni  P=4.67 4.41 3.86
+                 Q=0.6 0.0 0.0
+                   0.8 0.0 0.0
+                   8.6 0.0 0.0
+            enu   =-.543 -.398 -.304
+            c     =-.419 0.544 -.281
+            sqrdel=0.464 0.580 0.188
+            p     =0.054 0.027 2.398
+            gamma =0.546 0.240 -.009
+        ATOM=Se  P=4.95 4.84 4.17
+                 Q=2.0 0.0 0.0
+                   3.7 0.0 0.0
+                   0.3 0.0 0.0
+            enu   =-1.005 -0.388 -0.513
+            c     =-1.304 -0.360  1.311
+            sqrdel= 0.344  0.387  0.596
+            p     = 0.372  0.170  0.024
+            gamma = 0.442  0.145  0.150
+        ATOM=E   P=1.5 2.5 3.5
+                 Q=0 0 0
+                   0 0 0
+                   0 0 0
+            enu   =-1.758 -0.642  1.316
+            c     = 0.990  3.503  6.985
+            sqrdel= 0.590  0.485  0.400
+            p     = 0.006  0.003  0.001
+            gamma = 0.358  0.065  0.022
+CHARGE  LMTODAT=T ELF=F ADDCOR=F 
+        SPINDENS=F
+        CHARWIN=F EMIN=-2 EMAX=2
+PLOT    ORIGIN=0 0 0
+            R1=1 0 0 NDELR1=0
+            R2=0 1 0 NDELR2=0
+            R3=0 0 1 NDELR3=0
+        FORMAT=1
+BZ      NKABC=4 4 4 TETRA=T METAL=T
+        TOL=.000001
+        N=0 W=.005 RANGE=5 NPTS=1001
+EWALD   NKDMX=250 AS=2 TOL=.000001
+RHOFIT  FIT=F KAPPA2=0 RMAXS=3.5
+        ATOM=Ni LMXRHO=2 SIGMA=.7 .7 .7
+        ATOM=Se LMXRHO=2 SIGMA=.7 .7 .7
+        ATOM=E  LMXRHO=2 SIGMA=.7 .7 .7
+SCELL   PLAT=1 0 0
+             0 1 0
+             0 0 1 EQUIV=T
+HARTREE BEGATOM=T LT1=2 LT2=2 LT3=2
+DOS     NOPTS=801 EMIN=-2 EMAX=2
+SYML    NQ=30 Q1=0.0 0.0 0.0 LAB1=g
+              Q2=0.5 0.5 0.0 LAB2=M
+        NQ=20 Q1=0.5 0.5 0.0 LAB1=M
+              Q2=0.5 0.0 0.0 LAB2=X
+        NQ=20 Q1=0.5 0.0 0.0 LAB1=X
+              Q2=0.0 0.0 0.0 LAB2=g
+        NQ=35 Q1=0.0 0.0 0.0 LAB1=g
+              Q2=0.5 0.5 0.5 LAB2=R
+FINDES  RMINES=.9 RMAXES=4 NRXYZ=72 72 72
+\end{verbatim}
+
+Notice that the Wigner-Sitz radii have been inserted because
+SCLWSR=T.
+
+This is a complete CTRL file. The meaning of only a few of these
+tokens is necessary in order to run the program, however, a complete
+list with a description of each token
+is given in Section\ref{categ}.
+
+\item Before calculating
+the TB real space structure constants $S^\alpha $ and $\dot
+S^\alpha $ for the combined correction term by the
+{\em lmstr.run} program, the verbosity is lowered by changing
+VERBOS= to 40 in category IO.
+$S^\alpha $ only depends on the structure
+and the number of partial waves included, while $\dot S$ also depends on
+the WS-radii.  If these are changed during the calculations, the
+structure constants have to be recalculated.
+
+\item A self-consistent-field (SCF) calculation can now be performed
+using the program {\em lm.run}.  If self-consistency is not
+achieved within the specified number of iterations (10 in the present
+case, the token NIT= in category START), the iterations can
+be continued using as start values, the information (potentials,
+potential parameters, etc.) in
+the atomic files which were generated by {\em lm.run} or from the
+potential parameters or moments from the last iteration which the
+program wrote into the CTRL file.
+If it is decided to start the SCF calculation from scratch, then the
+atomic files must be erased. In the present case
+the program was converged before the 10th iteration. However, the
+default values for the k-mesh in the Brillouin zone are small (4
+divisions along each of the primitive reciprocal translation vectors in
+the present case (in general it depend on the structure),
+see token NKABC= in category BZ).
+
+\item {\em lm.run} is executed again with a larger number of k-points.
+This is only necessary for a metal where the Fermi energy and the
+Fermi surface must be accurately determined or for insulators if
+nice density of states is wanted.
+Change token NKABC= to e.g. 16 16 16 (depending on the length of the
+reciprocal translation vectors) in category BZ. In category
+START, the token BEGMOM= is set to F. This tells the
+program to start with a band structure calculation.
+
+\item After the SCF solution to the problem has been found, the results
+are analyzed. First,
+the band structure along lines in k-space is calculated
+using {\em lmbnd.run}. The default values for the lines are given in
+category SYML. If orbital projected bands (fat bands) are needed
+the token FATBAND= must be changed to T in category OPTIONS. It should
+be noticed that if the atomic files are present the potential
+parameters are calculated with the enu's in the CTRL file i.e. one can
+change the enu's to the range of interest. It should, however, be
+noticed that the Fermi energy is not recalculated.
+The band structure is plotted by {\em gnubnd.exec} as described in
+Section \ref{bandplot}.
+
+\item The atom and orbital projected densities of states (DOS) are
+calculated
+by {\em lmdos.run}. The default values for the energy window is the
+smallest and the largest eigenvalue (which are output from the {\em
+lm.run}). These and the number of
+mesh points are given in category DOS and they must be changed
+appropriately.
+To get nice curves also for semiconductors an
+iteration with more k-points should be performed by {\em lm.run} as
+described above.
+The DOS is plotted by {\em gnudos.exec} as described in Section
+\ref{dosplot}.
+
+\item The full charge density is calculated by {\em lm.run}
+in the charge mode i.e. the token CHARGE= is set to T in category
+OPTIONS. If the electron localization function (ELF) is also needed, the
+token ELF= is set to T in category CHARGE. The r-mesh on which these
+functions are calculated is given in category PLOT which must be
+changed. The plots are performed by {\em gnucharge.exec} as described
+in Section \ref{charplot} if token FORMAT=1 in category PLOT or with
+Data Explorer if FORMAT=3.
+
+\item The Fermi surface data is calculated by {\em lm.run} if the
+token FS= is set to T in category OPTIONS. This can be plotted by
+{\em gnufs.exec} as described in Section \ref{fsplot} (Note that not
+all structures are implemented yet!), or by Data Explorer.
+
+\end{enumerate}
+
+%\input{organ}
+\section{Organization of TB-LMTO Programs}
+\label{organ}
+
+\subsection{Content of the main directory}
+All executable programs are in the main directory.
+The TB-LMTO package consists of four classes of programs.
+
+({\em i})
+Programs to construct and check the data in the main input file (CTRL):
+
+{\em lminit.run} generates a CTRL file with the structural data.
+
+{\em lmhart.run} generates overlapping potentials from atomic
+Hartree potentials or finds MT-radii.
+
+{\em lmovl.run} calculates and displays sphere overlaps.
+
+{\em lmes.run} finds interstitial spheres.
+
+{\em lmctl.run} rewrites the CTRL file according to the parameters in
+the original CTRL and atomic files and inserts default values.
+
+{\em lmscell.run} increases the basis for super cell calculations.
+
+{\em lmnghbr.run} produces a table of neighbors for each atom.
+
+{\em lmclean.run} reduces the CTRL file to the essential
+crystallographic data.
+
+({\em ii}) Programs to calculate the structure constants
+and performe self-consistent calculations:
+
+{\em lmstr.run} generates the structure constants.
+
+{\em lm.run} is the main LMTO program performing self-consistency
+iterations.
+
+({\em iii}) Programs to calculate the data to be displayed:
+
+{\em lmbnd.run} generates bands for plotting.
+
+{\em lmdos.run} generates density of states for plotting.
+
+{\em lm.run} generates output for {\em lmdos.run} and charge density
+for plotting. (This is the same as under ({\em ii}) above, but run
+with different options.)
+
+({\em iv}) Plot programs. The programs with extension {\em exec} will
+(1) execute the program with the same name but extension {\em run},
+which produces data files for the GNUPLOT program, (2) call the
+GNUPLOT program to make the plot, and (3) delete the temporary data
+files.
+
+{\em gnudos.exec}: For density of states plot.
+
+{\em gnubnd.exec}: For energy bands plot.
+
+{\em gnucharge.exec}: For charge density plots.
+
+{\em gnufs.exec}: For Fermi surface plots.
+
+All these executable programs are made by the UNIX {\em make} command
+which compiles and links the source codes in the subdirectories. All
+information about how this should be done is in the {\em makefile},
+which is also located in the main directory. The {\em main} programs
+for the first three classes of programs above are made from the content
+of the file {\em lmall.f} in the main directory. This is done by
+{\em make} using the information in {\em makefile}, {\em getmain},
+and the program {\em ccomp}.
+{\em ccomp} and its source {\em ccomp.c} are in the main directory.
+The latter is the only program written in the language {\em C}.
+For a description of {\em ccomp.c} see Appendix \ref{prepro}. The reason
+why the {\em main} programs are constructed in this way is that when
+changes are made, this only has to be done once, namely in
+{\em lmall.f}.
+
+\subsubsection{Dimensions/size of the program}
+\label{dim}
+
+Since the program is written in FORTRAN77 no true dynamical memory
+allocation can be performed.  However, a `semi-dynamical memory
+allocation' procedure is implemented.  Apart from small fixed size
+arrays all arrays are stored in a work-array called {\em w} in the main
+programs.  At the time a new array is needed, say the Hamiltonian, its
+size is calculated and space for it is allocated in the work array.
+When the array it not needed anymore, the space is freed and other arrays
+can be stored in the same place.  This prevents `over-dimensioning'.
+The size of the work array, however, depends on the size of the problem
+i.e. number of atoms, number of k-points, number of partial waves, etc.
+The size of the work array is given by {\em wksize} in the main
+programs.  If {\em wksize} is too small for the problem at
+hand the program will abort, requesting increase of {\em wksize}.
+
+\subsection{Content of the subdirectories}
+After installation of the package each subdirectory contains files of
+source codes (.f or .c) and object codes (.o). Each file contains one
+main program or one subroutine. These are linked together by the UNIX
+{\em make} command to executable programs (.run) using the {\em
+makefile}.
+\subsubsection{Main programs}
+
+MAIN: All main programs. These are generated by {\em make} as described
+above.
+
+MAINA: Some subroutines which have to be linked to the main program
+and some routines to calculate the Hartree potential.
+
+\subsubsection{Structure related routines}
+
+TBSTR: Real-space tight-binding structure constants
+$S^\alpha $ and $\dot S^\alpha $ for combined-correction term.
+
+FINDES: Programs to find interstitial spheres.
+
+LATTICE: Routines which manipulate the lattice vectors.
+
+HARTREE: Programs to calculate Hartree potentials.
+
+\subsubsection{Atomic programs}
+
+ATOM: Produces potential parameters (pp) and other atomic information
+from the moments. Non-relativistic
+calculations may be performed by setting REL=F in category OPTIONS.
+One can choose between the von Barth-Hedin or the Cheperly-Alder
+local density exchange correlation potential. The Langreth-Mehl-Hu and
+Perdew-Wang gradient corretions are also implemented.
+
+\subsubsection{Solid state programs}
+
+BNDASA: Calculates energy bands and evaluates the moments.
+
+TETRA: Sets up the k-points and weights for k-space integration using
+the tetrahedron method.
+
+SAMPLE: k-space integration by sampling.
+
+MAD: Evaluates the Madelung potential and energy.
+
+DENS: Calculates full charge density and the ELF.
+
+RHONS: Makes a fit to the full charge density.
+
+SYM: Generates all operations in a space group from a set of
+generators.  This is used to determine the k-points in the irreducible
+part of the Brillouin zone, and to symmetrize the density matrix which
+is only calculated in the irreducible BZ.
+
+\subsubsection{Utility subdirectories}
+
+LMIO: Input of the CTRL file using library in IOLIB.
+
+IOLIB: Fortran support for input and file handling.
+
+IOCTRL: Programs to write the CTRL file.
+
+EISP: Matrix diagonalization routines.
+
+LINP: Linear algebra routines.
+
+BLAS: Basic linear algebra routines.
+
+EXTENS: Various utility routines and machine constants.
+
+TEX: This document and the Review of Modern Physics style file
+{\em rmp.sty}.
+
+\subsubsection{Plots}
+
+PLOT: Programs to produce the data files used by GNUPLOT. This is the
+only subdirectory where the programs are not split into subroutines.
+
+%\input{data}
+\section{Data files}
+\label{data}
+
+The names of the data files given below should be used,
+though the actual name depends on the operating system.
+The name of the program which produces the data file is given in
+parentheses.
+
+CTRL: An input and documentation file for all programs.
+All data in this file are described in detail in Section \ref{categ}.
+
+ATOM-NAME: There is one file assigned to each inequivalent atom.  A
+complete file (one generated in the atomic program) contains some
+general
+information, the moments, potential parameters and the ASA or Hartree
+potential and core density within the sphere.  The moments and potential
+parameters are most commonly read from this file, but it is possible to
+input the moments or the potential parameters
+from the CTRL file instead, in which case these
+files need not be present at the start of a run. The name ATOM-NAME is
+fixed by the string following ATOM= in the CLASS category of the CTRL
+file.
+
+The atomic file also has categories delimited by a nonblank character
+in the first column.  The categories are: GEN: A table of output
+generated by the ATOM program. MOMNTS: The P's and moments Q. PPAR: The
+potential parameters.  POT: The potential without the nuclear part
+(-2Z/r).
+The {\em lmhart.run} stores the Hartree atomic potential here, but after
+the run the atomic files are removed in order that they are not used
+by mistake as starting potentials in the SCF run.
+COR: The core electron density. PHI: $\phi $ and $\dot \phi $.
+
+None of these categories is essential unless the information is
+required.  For example, if you begin with a band calculation, it is
+essential that the potential parameters be present either here or in the
+CTRL file.
+If you begin with
+the moments, the moments must be present either here or in the CTRL
+file.  Like in the CTRL file, the data is formatted.  Having the
+potential present, facilitates the iterations towards
+self-consistency within the sphere.
+({\em lmhart.run and lm.run})
+
+STR: Unformatted file structure constants $S$ and $\dot S$ for the
+combined correction. ({\em lmstr.run})
+
+MIXM:
+This file contains moments and potential parameters from previous
+iterations for the Anderson or Broyden mixing.  This is delited
+after the job. ({\em lm.run})
+
+MOMS: Moments belonging to each eigenvalue (eigenvectors are only
+summed over the different magnetic states m). This is delited after
+the job. ({\em lm.run})
+
+BAND: Eigenvalues and angular momentum weights for density of states
+calculation.  ({\em lm.run})
+
+LMDM: Density matrix used for full charge density calculation.
+({\em lm.run})
+
+RHO: Full charge density (Including core if the token ADDCOR=T in
+category CHARGE). ({\em lm.run})
+
+RHOV: Valence charge density (Only produced if token ADDCOR=F in
+category CHARGE). ({\em lm.run})
+
+RHOC: Core charge density (Only produced if token ADDCOR=T in
+category CHARGE). ({\em lm.run})
+
+RHOS: Spin density density (Only produced if token SPINDENS=T in
+category CHARGE). ({\em lm.run})
+
+RHOF: Fitted charge density. (Only produced if token FIT=T in category
+RHOFIT). ({\em lm.run})
+
+BNDS: Energy bands. ({\em lmbnd.run})
+
+EIGN: Eigenvalues and full eigenvectors in the orthogonal representation
+- for `fatbands' plot.  Note that this file can be big and in case
+`fatbands'
+are not needed, set token FATBAND=F in category OPTIONS.
+({\em lmbnd.run})
+
+DOS: Atom and orbital projected densities of states.  ({\em lmdos.run})
+
+A number of files with extension .dx are created if the token FORMAT=3
+in the category PLOT. These are used in the plots using Data Explorer.
+
+%\input{categ}
+\section{Description of the CTRL file, Categories and Tokens}
+\label{categ}
+
+Examples of CTRL files are shown in Section \ref{execute}.
+
+The control file is the main input file, which can also serve to
+document a calculation.  Data is read from the control file by
+categories, one category at a time.  A category begins with a nonblank
+character in the first column; it ends with the next occurrence of one.
+The name of the category is the string that begins the category; e.g.
+the category `STRUC' begins with `STRUC' and ends before `CLASS'.
+Data within a category is identified by a token, e.g.  NSPIN=.
+Categories can occur in any order, but only the first category of a
+given name is used.  Apart from a mild exception described later, the
+order of tokens within a category is also irrelevant. Only the 200 first
+characters in each line are read and a \# works as an end-of-line
+character. See the documentation in IOLIB for a detailed description
+of the input procedures.
+
+Several programs modify the CTRL file for instance:
+{\em lmhart.run} inserts
+MT-radii, {\em lmes.run} inserts interstitial spheres,
+{\em lmctl.run} inserts default values for tokens not already
+specified in the CTRL file, and {\em lmscell.run} inserts data
+from the single cell to the super cell.
+The latter two changes the sphere radii
+to space filling spheres if the token SCLWSR=T in category SCALE.
+Furthermore, if {\em lm.run} ran successfully then the new potential
+parameters, the moments, the Fermi energy and the muffin-tin zero is
+written in the CTRL file. This means that the BAND file need not be
+present when running {\em lmbnd.run} (previously the Fermi energy was
+read from this file) and the atomic files need not be present when
+continuing the iterations (although it is somewhat faster to continue
+with the atomic files because the potentials are present).
+
+A complete list of categories and an explanation of each token is
+given below.
+
+Each subsection contains the name of the category and each
+`subsubsection' contains the name of the token.
+
+\subsection{Category HEADER (optional)}
+Provides space to describe the contents of the
+control file.
+
+\subsection{Category VERS}
+
+\subsubsection{Token LMASA- of cast integer}
+Is the version number to ensure compatibility of the CTRL
+file with the executing program. The program will send a warning
+message if the version number is incorrect, but it will not stop.
+
+\subsection{Category IO (optional)}
+
+\subsubsection{Token HELP= of cast logical (optional)}
+T: print a list of tokens and data appropriate for this program, without
+reading anything.
+
+\subsubsection{Token VERBOS= of cast integer (optional)}
+Is an integer that determines the verbosity of output a program
+sends to standard out.  The output is roughly as follows:
+
+0: nearly nothing is printed 10: very terse 20: terse 30: normal 40:
+normal 50: verbose 100: low-level debugging 110: intermediate level
+debugging 120: high-level debugging.
+
+\subsubsection{Token WKP= of cast logical (optional)}
+Is a switch that turns on the `debug' mode in the dynamic
+memory routines.  An effective heap is declared as a single integer
+array in the main program.  Pieces are apportioned dynamically by calls
+to routine defdr.f and others.  They can be `released' to be reused.
+You can watch the memory grow and shrink if this is turned on.
+
+\subsubsection{Token IACTIV= of cast logical (optional)}
+Is a switch that turns on the `interactive' mode.  When
+this mode is on, you have an option to abort program execution, change
+the verbosity, turn on the work array debug switch WKP= , or sometimes
+to change a value of a single variable that may be passed to query.
+There is also the option to turn off the interactive mode.  At the
+prompt, enter either a simple carriage return, or one of the following:
+`Vnnn', where nnn is the new verbosity; `W' to toggle printing of work
+array; `I' to turn off interactive prompt; `A' to abort program
+execution or, in the case when a variable is passed, you may also enter
+`Snnn', where nnn is a number (or T or F for logical variable); to
+change the value of that variable.
+
+\subsubsection{Token ERRTOL= of cast integer (optional)}
+An error or inconsistency discovered by the program is assigned an
+integer error code from 0 to 4. If the error code is larger or
+equal to the value of ERRTOL, the program will stop. The meaning of the
+error codes are: 0; information, 1; warning, 2; error (this is the
+default), 3; severe error, meaning that the results cannot be trusted,
+4; fatal error, the program will always stop. For ERRTOL $>$ 4, ERRTOL
+is set to 4. For ERRTOL=--1 all errors will be ignored and the program
+will continue.
+
+\subsubsection{Token OUTPUT= of cast character (optional)}
+A file name to which standard out is routed. OUTPUT=* means standard
+out.
+
+\subsubsection{Token ERR= of cast character (optional)}
+A file name to which standard error is routed.
+ERR=* means standard error.
+
+\subsection{Category DIM}
+In this category some parameters related to the dimension of the
+problem is given. These are output from the programs and not needed to
+run the programs.
+
+\subsubsection{Token NBAS= of cast integer (optional)}
+Is the number of atoms in the basis. This is not used as an input
+to the calculation.
+
+\subsubsection{Token NCLASS= of cast integer (optional)}
+Is the number of classes (inequivalent atoms not related by symmetry).
+This is not used as an input to the calculation.
+
+\subsubsection{Token NL= of cast integer}
+Maximum number of $\ell $ values on any sphere. This need not be given.
+
+\subsubsection{Token LDIM= of cast integer}
+The number of low partial waves.
+
+\subsubsection{Token IDIM= of cast integer}
+The number of intermediat (down-folded) partial waves.
+
+\subsubsection{Token NSYMOP= of cast integer}
+The number of symmetry operations in the space group.
+
+\subsubsection{Token NKP= of cast integer}
+The number of irreducible k-points.
+
+\subsection{Category STRUC}
+
+\subsubsection{Token ALAT= of cast double}
+Is a scaling factor, in atomic units (Bohr radii), of the primitive
+translation and basis vectors.
+
+\subsubsection{Token PLAT= of cast double and length 9}
+Are primitive translation vectors, ${\bf t}_1, {\bf t}_2, {\bf t}_3$,
+in units of ALAT and in Cartesian coordinates. The order is as follows:
+$t_{1x} t_{1y} t_{1z} t_{2x} t_{2y} t_{2z} t_{3x} t_{3y} t_{3z}$.
+
+\subsubsection{Token FIXLAT= of cast logical}
+The program may change the lattice. If this is not wanted choose
+FIXLAT=T. (FIXLAT=T is default.)
+
+\subsection{Category OPTIONS (optional)}
+Is self explanatory.
+
+\subsubsection{Token NSPIN= of cast integer (optional)}
+Must be 1 for non-spin-polarized or 2 for spin-polarized
+calculations.
+
+\subsubsection{Token REL= of cast logical (optional)}
+T: The scalar relativistic wave equation is solved.
+F: The non-relativistic Schr\"odinger equation is solved.
+
+\subsubsection{Token CCOR= of cast logical (optional)}
+Turns on the combined correction.  Program {\em lmstr.run} always
+calculates the $\dot S^{\alpha }$.  They are stored in a file SDOT for
+use by program {\em lm.run} and {\em lmbnd.run},
+which will include the combined correction
+into the LMTO Hamiltonian and overlap matrices
+when this switch is set to T.
+
+\subsubsection{Token NONLOC= of cast logical (optional)}
+T: Turns on one of the non-local exchange correlations specified by the
+token NRXC.
+\subsubsection{Token NRXC= of cast logical (optional)}
+For NRXC=1 the von Barth-Hedin local exchange correlation potential is
+used. If the token NONLOC=T the Langreth-Mehl-Hu non-local exchange
+correlation is added.
+For NRXC=2 the Vosko-Wilk-Nusair local exchange correlation potential is
+used. If the token NONLOC=T the Perdew-Wang non-local exchange
+correlation is added.
+
+\subsubsection{Token NRMIX= of cast integer (optional)}
+Determines the number of previous iterations in the charge density to 
+mix when making a sphere self-consistent.  Anderson mixing is
+used to mix the charge density to facilitate convergence.  Practical
+experience has shown that NRMIX=2 works well (this is the default), and
+normally you should not need to worry about this parameter.  It may
+occasionally happen that the sphere program will not converge with
+Anderson mixing, in which case you should set NRMIX to 0.
+
+\subsubsection{Token Q= of cast character (optional)}
+BAND, MAD, ATOM, SHOW make the program stop after the
+band structure calculation, the Madelung calculation etc.
+
+\subsubsection{Token CORDRD= of cast logical (optional)}
+T: Reads the core density from the atomic file.  The core
+density is not calculated inside the atomic loop but kept frozen.
+(Default is F.)
+
+\subsubsection{Token CARTESIAN= of cast logical (optional)}
+T: The position of the atoms is given in cartesian coordinates and in
+units of ALAT.
+F: The position of the atoms is given in units of the translation
+vectors (length and direction) a, b, c. For non-symmorphic groups, also
+the non-primitive translation vectors associated with the space group
+operations are given in these units.
+
+\subsubsection{Token NITATOM= of cast integer (optional)}
+Number of atomic iterations.  To make any atom self-consistent
+NITATOM=80 suffices.  However, there is no need for
+fully self-consistent atoms in the beginning of the band structure
+loops since the moments are not fully self-consistent. The default is 30
+
+\subsubsection{Token CHARGE= of cast logical (optional)}
+T: Full charge density is calculated.  Other Tokens are
+automatically set to the right values.  (Only active for {\em lm.run}.)
+
+\subsubsection{Token FATBAND= of cast logical (optional)}
+T: a file (EIGN) is produced by {\em lmbnd.run} containing the
+eigenvalues and eigenvectors. This is used by the plot program to
+give the energy bands a width proportional to specified orbital
+characters. The default is F.
+
+\subsubsection{Token AFM= of cast logical (optional)}
+T: Anti ferromagnetic calculation.  I.e. the electronic
+structure is only calculated for one spin direction.  It should be
+noticed that the atoms in
+the two spin sublattices must occur in exactly the same order in the
+CTRL file as explained in Section \ref{spin}.
+
+\subsubsection{Token FS= of cast logical (optional)}
+T: The program {\em lm.run} produces a file LMFS, which can
+be used to plot the Fermi surface.
+
+\subsubsection{Token OVLCOR= of cast logical (optional)}
+T: A correction for the sphere overlap is added to the hamiltonian
+and overlap matrices. This is not well optimized, therefore, it is
+recommended to use the default value F.
+
+\subsubsection{Token WRIBAS= of cast logical (optional)}
+T: The {\em lmctl.run} program will create a file cstruc.dx with
+all atomic positions within the volume defined in category PLOT.
+This can be used by DATA EXPLORER to make a plot of the structure.
+If {\em lmctl.run} is executed interactively (token IACTIV=T in
+category IO) the colors and the `sticks' connecting the atoms
+can be chosen, otherwise they are chosen by the program.
+
+\subsubsection{Token SEWALD= of cast logical (optional)}
+T: The structure constants are calculated by the Ewald method. (Default
+is F.) This could be usefull if it is difficult to converge the
+structure constants by the real space method.
+
+\subsection{Category CLASS}
+Contains information relevant to parameters inside atomic
+spheres for each inequivalent atom.
+
+\subsubsection{Token ATOM= of cast character}
+A one-- (or more) character string naming the atom of
+that class.  This string names the disk file -- at least for some
+operating systems -- that will hold important information about that
+atom (potential parameters, moments, potential etc.),
+and is used elsewhere in the input (see categories SITE
+and START below) to identify a particular atom.  Following the token
+ATOM=, several tokens are sought:
+
+\subsubsection{Token NEWNAM= of cast logical}
+T: The program is allowed to change the names of the atoms.
+
+\subsubsection{Token Z= of cast double}
+The nuclear charge of the atom. For interstitial spheres Z=0.
+
+\subsubsection{Token R= of cast double (optional)}
+The sphere radius, in atomic units (Bohr radii).
+
+\subsubsection{Token LMX= of cast integer (optional)}
+The maximum $\ell $ quantum number inside the sphere.
+
+\subsubsection{Token IDXDN= of cast integer and length 4 (optional)}
+Can take the value 0, 1, 2, or 3, for each $\ell $. This
+determines if the partial wave should be treated as low (1),
+intermediate (2) (i.e. it will be downfolded), or high (3) (i.e. it will
+be thrown away). If IDXDN=0;
+then the program decides if the partial wave should
+be treated as low, intermediate, or high.
+
+\subsubsection{Token CONF= of cast integer and length 4 (optional)}
+Configuration i.e. a principal quantum number.
+This determines which states will be treated
+as core states.  For each $\ell $ all states with principal quantum
+number smaller than that given by CONF will be treated as core states.
+
+\subsubsection{Token IDMOD= of cast integer and length 4 (optional)}
+Is a set of integers, one for each $\ell $-channel.  IDMOD
+controls how the potential parameter E$_\nu $ changes from one
+iteration to the next in a self-consistency cycle.
+
+IDMOD=0 lets the E$_\nu $'s
+shift to the center of gravity of the occupied part
+of the band (this is the default);
+
+IDMOD=1 essentially freezes the
+logarithmic derivative of the wave function phi at the sphere radius;
+
+IDMOD=2 freezes the E$_\nu $'s from
+one iteration to the next.
+
+Because data must be read for each atom, tokens are repeated (once for
+each class).  For that reason, there is some restriction as to the order
+of tokens.  Tokens Z=, R=, R/W=, LMX= and CONF= must follow the token
+ATOM= they are associated with and precede the next token ATOM=.
+
+\subsection{Category SITE}
+Holds site information.
+
+\subsubsection{Token ATOM= of cast character}
+Is needed to identify which atom in category CLASS that site
+belongs to.  Similarly to category CLASS, one set of tokens is read for
+each site in the basis, and there is a similar restriction on the order
+of tokens.
+
+\subsubsection{Token POS= of cast double and length 3}
+Is a basis vector, in units of ALAT and in
+cartesian coordinates. The basis could alternatively be given in units
+of the translation vectors {\bf a}, {\bf b}, and {\bf c} (see token X=).
+Some of the programs require the most compact basis position i.e.
+positions closest to the origin. These new positions are calculated
+by the programs and written back into the CTRL file.
+
+\subsubsection{Token X= of cast double and length 3}
+Is a basis vector, in units of the translation vectors {\bf a}, 
+{\bf b}, {\bf c}. The basis could alternatively be given in units of
+ALAT and in cartesian coordinates (see token POS=).
+This is only read if the token CARTESIAN=F in
+category OPTIONS (see this and the description to the token POS=).
+
+\subsection{Category SYMGRP (optional)}
+Provides information to confine integrations to a
+smaller part of the Brillouin zone.  One enters a small number of space
+group operations; subroutines in the subdirectory SYM
+will generate all
+inequivalent products of these operations.  For example, the three
+operations R4X, MX and R3D are sufficient to generate all 48 elements of
+the cubic octahedron symmetry.  Symbols have the form O:(nx,ny,nz) where
+O is one of M, I or Rj for mirror, inversion and j-fold rotation; and
+nx,ny,nz are a triplet of indices specifying the axis of operation.  You
+may use X, Y, Z or D as shorthand for (1,0,0), (0,1,0), (0,0,1),
+(1,1,1).  You may also enter products, such as I*R4X.  Since these
+operations restrict numerical integration to a portion of the BZ, it is
+important that the class definitions in category CLASS are compatible
+with these operations.  If these operations must assume two atoms to be
+equivalent but are not so defined in CLASS, the electron density in
+those two atoms may not be equivalent.  For non-symmorphic space groups
+the translational part of the group operation must also be specified
+(this is only used for calculating the density matrix, i.e. for charge
+density calculation).  This is done by adding after the rotational part
+:(rx,ry,rz).  I. e. for the NiSe2 example above MZ:(0.5,0,0.5). If the
+token CARTESIAN=F in category OPTIONS the translation is given in terme
+of the chemists a, b, and c and the rotation part is separated from the
+translation part by ::. I. e. MZ::(0.5,0,0.5).
+
+\subsubsection{Token NGEN= of cast integer (optional)}
+The number of generators that follows.
+
+\subsubsection{Token GENGRP= of cast integer (optional)}
+The names of the generators separated by a blank.
+
+\subsubsection{Token USESYM= of cast logical (optional)}
+T: The space group generated from the generators is used.
+This may be useful if the calculation has to be performed for a lower
+symmetry than the actual symmetry of the solid. F: The space group of
+the solid is found by the program
+and used in the calculation.
+Furthermore, if some atoms are missing in
+category SITE they will be added to the basis.  I.e. only one of the
+equivalent atoms must be supplied in SITE.
+After the basis has been completed it is recommended to use USESYM=F.
+
+\subsubsection{Token SPCGRP= of cast character (optional)}
+Is the name of the space group. See Ref. 8.
+
+\subsubsection{Token IORIGIN= of cast integer (optional)}
+Can take the values 1 or 2 depending on the choice of origin. The same
+convension as in Ref. 8 is used. This is used for generation the CTRL
+file by {\em lminit.run}.
+
+\subsection{Category SCALE}
+Contains information about scaling the sphere radii.
+
+\subsubsection{Token SCLWSR= of cast logical (optional)}
+T: Scale the sphere radii. F: Do not scale.
+
+\subsubsection{Token FACVOL= of cast double (optional)}
+Scale the sphere volumes to FACVOL$\times $ the unit cell volume.
+Default is FACVOL=1.
+
+\subsubsection{Token OMMAX1= of cast double and length 3 (optional)}
+Scale to an overlap (s1+s2--d)/d $<$ OMMAX1, keeping s1/s2 ratio.
+s1 and s2 are the two sphere radii and d is the distance between the
+centers of the spheres. The three numbers are for atom-atom,
+atom-interstitial, and interstitial-interstitial overlap, respectively.
+The default values are: 0.16, 0.18, and 0.20.
+
+\subsubsection{Token OMMAX2= of cast double and length 3 (optional)}
+Scale to an overlap (s1+s2--d)/s $<$ OMMAX2, keeping s1/s2 ratio.
+s1 and s2 are the two sphere radii, s is the smallest of these, and d
+is the distance between the centers of the spheres.
+The three numbers are for atom-atom,
+atom-interstitial, and interstitial-interstitial overlap, respectively.
+The default values are: 0.40, 0.45, and 0.50.
+
+\subsubsection{Token GAMMA= of cast double (optional)}
+Linear scaling of radii to space filling volume. s(new) = a(s(old)+b),
+where ab=GAMMA(a-1) $\times $ the average Wigner-Seitz radius.
+
+\subsection{Category STR}
+Contains information for the structure constant program.
+Real space tight-binding structure constants are generated for a cluster
+of atoms inside RMAXS$\times $W around each basis atom by `inversion'
+using Cholesky decomposition. See the explanation in the subdirectory
+TBSTR.
+
+%\subsubsection{Token NKAP= of cast integer (optional)}
+%number of kappa values.  The program is prepared for two
+%kappas but only one kappa is fully implemented.  Default is 1.
+
+\subsubsection{Token KAPPA2= of cast double (optional)}
+Kappa square.  The default is zero, but the program works
+for positive as well as negative kappas.  Alternatively KW**2 may be
+used as input.
+
+\subsubsection{Token KW**2= of cast double (optional)}
+(Kappa$\times $average Wigner-Seitz radius) squared.
+
+\subsubsection{Token IALPHA= of cast integer (optional)}
+IALPHA=0: $\alpha _{l,R}=
+j_l(kappa\times SIGMA\times s_R) /
+n_l(kappa\times SIGMA\times s_R) $
+is used. Where SIGMA is a token.
+
+IALPHA=1: $\alpha $'s are calculated in the program.
+$\alpha $ and $\dot \alpha $ depend on kappa.
+The canonical $\alpha $'s only applies for kappa=0.  Optimal $\alpha $'s
+(leading to screening for non-zero kappa's) have been calculated
+as a function of kappa and a fit formula has been found.  This is used
+to calculate the $\alpha $'s.
+
+IALPHA=2: $\alpha $ (token ALPHA) and $\dot \alpha $ (token ADOT)
+must be supplied in the CTRL file.
+
+\subsubsection{Token ALPHA= of cast double (optional)}
+A list of $\alpha $ values which are read as follows:
+\begin{verbatim}
+STR ATOM=i ALPHA=al(0,i) al(1,i) ... al(lmx,i)
+           ADOT= ad(0,i) ad(1,i) ... ad(lmx,i)
+    ATOM=j ALPHA=al(0,j) al(1,j) ... al(lmx,j)
+           ADOT= ad(0,j) ad(1,j) ... ad(lmx,j)
+    ...
+\end{verbatim}
+Where the al's and ad's are numbers (one for each $\ell $ and
+atom) ALPHA and ADOT are tokens.
+
+\subsubsection{Token ADOT= of cast double (optional)}
+ADOT is $\dot \alpha $. For format of input, see the token ALPHA.
+Only used if CCOR=T.
+
+\subsubsection{Token SIGMA= of cast double (optional)}
+Screening core radii used to make $\alpha $'s if the token IALPHA=0.
+They are read as follows:
+\begin{verbatim}
+STR ATOM=i SIGMA=si(0,i) ... si(lmx,i)
+    ATOM=j SIGMA=si(0,j) ... si(lmx,j)
+    ...
+\end{verbatim}
+Where the si's are numbers, one for each $\ell $ and atom.
+
+\subsubsection{Token DOWATS= of cast logical (optional)}
+T: A `Watson sphere' with a radius enclosing all atomic
+spheres in the cluster plus DELTR (Token DELTR below) $\times $ W (=the
+average Wigner-Seitz radius) is placed around each cluster of atoms.  On
+this sphere the envelope functions expanded in spherical harmonics is
+zero for all $l$'s below LMAXW (Token LMAXW below).
+
+\subsubsection{Token DELTR= of cast double (optional)}
+See Token DOWATS above.
+
+\subsubsection{Token LMAXW= of cast integer (optional)}
+See Token DOWATS above.
+
+\subsubsection{Token RMAXS= of cast double (optional)}
+Is the maximum sphere radius (in units of the average WS)
+in which neighbors will be included in the generation of structure
+constants.  This takes a default value and is not required as input.
+For `strange' structures one should calculate the structure constants
+for several RMAXS and check if the structure constants are converged.
+
+\subsubsection{Token NDIMIN= of cast integer (optional)}
+For positive values of
+NDIMIN, the number of sites in the cluster around each site is
+determined as the total number of orbitals in the cluster $>$ NDIMIN.
+The number of orbitals on each site is weighted by WSR(tail)/WSR(head).
+I. e. NDIMIN $<$ Sum(i) (number of orbitals at site i)$\times $s(i)/s(j)
+for the cluster around site j. 
+This is not done if NDIMIN=0. The default value is 350.
+
+\subsubsection{Token ITRANS= of cast integer (optional)}
+This token is only effective for the {\em lmstr.run} program. It can
+take three values: 0, the usual TB-structure constants; 1 or 2,
+new structure constants. Default is 0.
+
+\subsubsection{Token DONALP= of cast logical (optional)}
+T: Plot a screened envelope function: $\| N\rangle + \epsilon
+\| \dot N\rangle$. See Ref. 10. The following tokens:
+LDN, MDN, JBASDN and EPS must be supplied.
+
+\subsubsection{Token LDN= of cast integer (optional)}
+See token DONALP. LDN is the $\ell $-value of the function.
+
+\subsubsection{Token MDN= of cast integer (optional)}
+See token DONALP. MDN is the $m$-value of the function.
+
+\subsubsection{Token JBASDN= of cast integer (optional)}
+See token DONALP. JBASDN is the atom number on which the function
+is centered.
+
+\subsubsection{Token EPS= of cast double (optional)}
+See token DONALP. EPS is the $\epsilon$-value of the function.
+
+\subsubsection{Token NOCALC= of cast logical (optional)}
+Is available if it is desired to read the structure
+constants from the file without recalculating them.  This is mostly
+useful if you would like to look at them (by turning the
+verbosity above 40) without recalculating them.
+
+\subsection{Category BZ}
+Holds information concerning the numerical integration of
+energy bands, etc. over the Brillouin Zone.  The LMTO programs are not
+tied to any particular method, so the desired method must be specified
+by a token. In all
+methods, the BZ is split into a mesh of parallelepipeds.
+
+\subsubsection{Token NKABC= of cast integer and length 3}
+Is the number of divisions of the three primitive
+reciprocal translation vectors.  This is preferable to the alternative
+token MAXKP below, since the divisions
+can be chosen so that the step length is about the same along the three
+vectors.
+
+\subsubsection{Token MAXKP= of cast integer}
+Is the maximum number of k-points in the entire Brillouin zone.
+
+\subsubsection{Token TETRA= of cast logical (optional)}
+T: k-space integration by the tetrahedron method. F:
+integration by sampling.  (Don't use F!!!  O.J.)
+
+\subsubsection{Token METAL= of cast logical (optional)}
+T: for metals. F: for insulators.  If not known or for the
+first iterations choose T.
+
+\subsubsection{Tokens N=, W=, RANGE=, and NPTS=}
+Parameters used in k-space
+integration by sampling.
+
+\subsubsection{Token TOL= of cast double (optional)}
+Is the accuracy with which the Fermi level will be determined.
+
+\subsection{Category EWALD (optional)}
+Holds information controlling the Madelung sums.  The
+defaults are almost always adequate; for a detailed description the
+reader is referred to the documentation on the Madelung sums in the
+program in the subdirectory MAD.
+For `strange' structures one should check the convergence by
+decreasing the token TOL= (see below).
+
+\subsubsection{Token AS= of cast double (optional)}
+Controls the relative number of lattice vectors in real and
+reciprocal space.
+
+\subsubsection{Token NKDMX= of cast integer (optional)}
+Maximum number of terms in the Ewald sum (used for both
+real space and reciprocal space sums)
+
+\subsubsection{Token TOL= of cast double (optional)}
+Is the error criterion for the Ewald sums.
+
+\subsection{Category DOS}
+Holds information about the energy mesh in the density of
+states calculations.
+
+\subsubsection{Token NOPTS= of cast integer}
+Number of energy mesh points.
+
+\subsubsection{Token EMIN= of cast double}
+First energy mesh point.
+
+\subsubsection{Token EMAX= of cast double}
+Last energy mesh point.
+
+\subsection{Category SYML}
+Holds information about lines in k-space along which the
+band structure should be calculated and plotted.
+
+\subsubsection{Token NQ= of cast integer}
+The number of points along the line.
+
+\subsubsection{Tokens Q1, Q2= of cast double and length 3}
+The first point and last point on
+the line in Cartesian coordinates and in units of
+2$\pi $/ALAT, where ALAT is the lattice constant given in the CTRL
+file.
+
+\subsubsection{Tokens LAB1, LAB2= of cast character}
+The labels of the first and last point on the line. Because of
+limitations in the present version of gnuplot the $\Gamma $ point
+should be given the label $G$.
+
+\subsection{Category START (optional)}
+Controls the flow of execution and the mixing scheme used
+in the iterations towards self-consistency in the
+{\em lm.run} program.  Either
+the modified Broyden mixing or Anderson mixing scheme can be used to get
+an optimal input vector of P and Q for the next iteration to
+self-consistency.  For more information, see subroutines {\em mixpq.f},
+{\em mixpqa.f} and {\em mixpqb.f} in the subdirectory MAINA.
+
+\subsubsection{Token NIT= of cast integer (optional)}
+Is the number of iterations {\em lm.run} executes before quitting
+(unless self-consistency is achieved earlier).
+
+\subsubsection{Token BROY= of cast logical (optional)}
+T: Modified Broyden mixing. F: Anderson or linear mixing.
+
+\subsubsection{Token WC= of cast double (optional)}
+Specifies how strong previous iteration steps are weighted in
+the modified Broyden scheme. For WC large, the last iteration step is
+weighted most.  When starting with bad moments it is useful to cancel
+the stored Jacobi matrix after some iterations to let the calculation
+forget its history (delete file MIXM).
+You can also choose an
+arbitrary negative value for WC.  In this case, WC is adjusted
+internally according to the inverse root mean square difference of the
+components of the mixed vector.
+
+\subsubsection{Token NMIX= of cast integer (optional)}
+Is the number of previous iterations mixed in with the present
+one using the Anderson scheme. Use NMIX=0 for linear mixing and the
+the token BETA= the feedback parameter.
+
+\subsubsection{Token BETA= of cast double (optional)}
+Is the proportion of the new iteration (as obtained from the
+Anderson mixing) admixed with the (1-BETA) of the old iteration. When
+difficulties with convergence occur BETA should be reduced.
+
+\subsubsection{Token CNVG= of cast double (optional)}
+Is the tolerance in the RMS change in the zeroth moments before
+self-consistency is achieved.
+
+\subsubsection{Token CNVGET= of cast double (optional)}
+Is the tolerance in the total energy before self-consistency
+is achieved.
+
+\subsubsection{Token FREE= of cast logical (optional)}
+Is intended to facilitate a self-consistent free-atom
+calculation.  When FREE is true, the program uses R=30 for the sphere
+radius rather than whatever R is passed to it; the boundary
+conditions at R are taken to be value=slope=0 (R=30 should be
+large enough that these boundary conditions are sufficiently close to
+that of a free atom.); subroutine {\em atscpp.f} in subdirectory ATOM
+does not calculate potential
+parameters or save anything to disk; and program
+{\em lm.run} terminates after all
+the atoms have been calculated.  Token FREE= T, and running {\em
+lmbnd.run}, free-electron bands are produced.  In this case the
+structure constants are not used.
+
+\subsubsection{Token BEGMOM= of cast logical (optional)}
+T: Causes program {\em lm.run} to begin with moments from
+which potential parameters are generated. F: the potential
+parameters are used and the program proceeds directly to the band
+calculation.
+
+\subsubsection{Token CNTROL= of cast logical (optional)}
+T: Read and use moments or potential parameters
+supplied in the CTRL file.
+F: The data following CNTROL are not used.  Both the
+`continuous principal quantum numbers' P (as described in the section
+`Iterations Towards Self-Consistency') and the Q's (the moments) must be
+present for a given atom as displayed in the example; however, it is not
+necessary to have an input for each atom.  Moments are read in Q0, Q1,
+Q2, once for each $\ell $ channel,
+and then once for each spin, if there are
+two spins.  In the case ATOM=NI in the above example, 0.6 electrons
+is put in the s orbital, 0.8 in the p and 8.6 in the d.
+
+\subsubsection{Token EFERMI= of cast double precision (optional)}
+The Fermi energy. This is an output from the program. If it is not
+calculated a default value of -0.25Ry is inserted.
+
+\subsubsection{Token VMTZ= of cast double precision (optional)}
+The muffin-tin zero. This is an output from the program. If it is not
+calculated a default value of -0.75Ry is inserted.
+
+\subsection{Category HARTREE}
+Gives information about the calculation of the overlapping
+Hartree potential.
+
+\subsubsection{Tokens LT1, LT2, LT3= of cast integer}
+The solid Hartree potential is a superposition of
+atomic Hartree potentials.  Atoms in unit cells translated from --LT1
+to +LT1 (and equivalently for LT2 and LT3) are taken into account.
+
+\subsubsection{Token BEGATOM= of cast logical (optional)}
+T: Calculation of the SCF potential for each atom (Notice that the
+token FREE is effective) and keep the Hartree part.
+F: The potentials are read from the atom files.  After this an
+overlapping Hartree potential for the solid is constructed and stored
+in the file POT.
+
+\subsection{Category PLOT}
+Gives the mesh on which the full charge density, the ELF,
+or the Hartree potential has to be calculated. The mesh can be given
+by the three vectors R1, R2, and R3 or on a sphere in which case the
+radius (RMIN and RMAX), the angle theta (TMIN and TMAX in the range
+from 0 to 180 degrees), and the angle phi
+(PMIN and PMAX in the range from 0 to 360 degrees) has to be given.
+
+\subsubsection{Token ORIGIN= of cast double and length 3}
+Origin of the mesh in Cartesian coordinates and in units of ALAT.
+
+\subsubsection{Tokens R1, R2, and R3= of cast double and length 3}
+Are three vectors spanning a parallelepiped in
+which the charge density is calculated.  Units of ALAT.
+
+\subsubsection{Tokens RMIN and RMAX= of cast double}
+Radii in a spherical coordinate system.
+
+\subsubsection{Tokens TMIN and TMAX= of cast double}
+Theta angles in a spherical coordinate system.
+
+\subsubsection{Tokens PMIN and PMAX= of cast double}
+PHI angles in a spherical coordinate system.
+
+\subsubsection{Tokens NDELR1, NDELR2, and NDELR3= of cast integer }
+Number of mesh points along the R1, R2, and R3 vectors respectively, or
+from RMIN to RMAX, from TMIN to TMAX, and PMIN to PMAX respectibely.
+If NDELR3=0
+the charge density is evaluated in the plane spanned by R1 and R2.
+If NDELR2= is also 0
+the charge density is evaluated along the line R1.
+For spherical coordinates NDELR1=0 gives plots on a sphere.
+
+\subsubsection{Token FORMAT= of cast integer (optional)}
+Selects the format of the output file. FORMAT=1, the format is
+appropriate for the GNUPLOT. =3, the format appropriate for DATA
+EXPLORER. =2, the format for 2D plots: x, y, f(x,y) and for 3D plots
+x, y, z, f(x,y,z), where x, y, and z are the x-, y-, and z-coordinate
+of the mesh point and f is the value of the function at this point.
+There is one mesh point per line.
+This format is appropriate for other plot packages.
+
+\subsection{Category CHARGE}
+Information about the full charge or spin density calculation.
+
+\subsubsection{Token LMTODAT= of cast logical}
+T: for the first plane in which the charge density has to
+be evaluated.  For subsequent planes some data are already present (i.e.
+LMDM) and need not be recalculated, therefore LMTODAT= F.
+Default is T.
+
+\subsubsection{Token CHARWIN= of cast logical (optional)}
+T: Only states in the energy window from EMIN to EMAX
+are included.  F: All occupied states are included (default).
+
+\subsubsection{Token EMIN= of cast double}
+For CHARWIN=T, EMIN is the minimum energy in the energy window.
+
+\subsubsection{Token EMAX= of cast double}
+For CHARWIN=T, EMAX is the maximum energy in the energy window.
+
+\subsubsection{Token ELF= of cast logical}
+T: in addition to the charge density, the electron
+localization function is calculated.
+
+\subsubsection{Token ADDCOR= of cast logical}
+T: The core charge density is added to the valence charge density. F:
+The core is not added, which is the default.
+
+\subsubsection{Token SPINDENS= of cast logical}
+T: The spin density is also calculated.
+
+\subsection{Category FINDES}
+Information about the search for interstitial spheres. The program
+{\em lmes.run} first checks if the atomic muffin-tin radii found by
+{\em lmhart.run} can be scaled to fill space without violating the
+overlap rules in category SCALE. If this is the case then the program
+stops. If it is not the case the program searches for interstitial
+spheres (ES). For each ES found with radius larger than the token RMINES
+(see this) the space filling is checked (scaling to space filling and
+checking overlaps). If space filling is reached the program stops,
+otherwise more ES are searched for. The program will eventually stop 
+either because space filling has been reached or no more ES can be
+found with radii larger than RMINES. In the latter case RMINES has to
+reduced.
+
+\subsubsection{Token RMINES= of cast double (optional)}
+No sphere with radius smaller than RMINES (in a.u.) should be found.
+The default value is 1.25 a.u.
+
+\subsubsection{Token RMAXES= of cast double (optional)}
+No sphere with radius larger than RMAXES (in a.u.) should be found.
+The default value is 4.5 a.u.
+
+\subsubsection{Token MAXPT= of cast integer (optional)}
+A real space mesh is used in the search for
+interstitial spheres. MAXPT is approximately the total number of points
+in the unit cell. Alternatively the token NRXYZ= below can be used.
+
+\subsubsection{Token NRXYZ= of cast integer and length 3 (optional)}
+A real space mesh is used in the search for
+interstitial spheres. The three numbers NRXYZ are the divisions
+of the three translation vectors.
+
+\subsection{Category SCELL}
+Information for supercell calculations.
+
+\subsubsection{Token PLAT= of cast double and length 9}
+Primitive translation vectors for the supercell. This is equivalent
+to the token PLAT in category STRUC and should be compatible with
+this i.e. the supercell translations should be a multiplum of those
+in STRUC.
+
+\subsubsection{Token EQUIV= of cast logical (optional)}
+T: The atomic data in category CLASS and SITE for the supercell will
+be completed from the single cell data.
+
+\subsection{Category RHOFIT}
+This category holds information about fitting the charge density. It is
+not recommended to use it!
+
+\subsubsection{Token FIT= of cast logical}
+T: Fit the charge density.
+
+\subsubsection{Token KAPPA2= of cast double}
+Energy of the fitting functions.
+
+\subsubsection{Token KW**2= of cast double}
+EKAP (see above) times the average Wigner-Seitz radius squared.
+
+\subsubsection{Token RMAXS= of cast double}
+Size of cluster used for calculating the structure constants. Same as
+in category STR.
+
+\subsubsection{Token SIGMA= of cast double}
+Fitting radius. This is read in the same way as in category STR.
+\begin{verbatim}
+RHOFIT ATOM=i LMXRHO=2 SIGMA=s(0,i) ... s(lmx,i)
+       ATOM=j LMXRHO=2 SIGMA=s(0,j) ... s(lmx,j)
+       ...
+\end{verbatim}
+Where the s's are numbers. The value of LMXRHO is only an example.
+
+\subsubsection{Token LMXRHO= of cast double}
+Maximum $\ell $ as each site. See token SIGMA= how it is read.
+
+
+%\input{iter}
+\section{Iterations Towards Self-Consistency }
+\label{iter}
+Just as the LMTO method breaks naturally into an atomic part and a
+`solid' part, so do the programs.  In general the `solid' part requires
+potential parameters and structure constants as its input, from which it
+generates bands, energy moments, densities-of-states, etc.  The `atomic'
+part takes moments as its input and calculates potential parameters from
+it.  The atomic part requires very little information beyond the moments
+and E$_\nu $'s or boundary conditions to completely specify the
+electronic structure within an atomic sphere.
+
+An LMTO calculation is self-consistent when the atomic part produces,
+from moments generated by the solid part, once again the same potential
+parameters that the solid part used to generate the moments in the first
+place.  The self-consistency works by alternating between the solid part
+and atomic part, generating moments, then potential parameters, then
+moments again until the process converges.  The program can be started
+either with the solid part, specifying potential parameters, or with the
+atomic part, specifying the moments.
+
+Because the method is a linear one, only three functions can carry
+charge inside a sphere ($\phi ^2, \phi \dot \phi, \dot \phi ^2$) and
+therefore the properties of a sphere, within the approximations of the
+linear method are completely determined by the first three moments, the
+atomic number and the E$_\nu $'s or boundary conditions at the surface
+of the sphere.  In some sense these numbers are `fundamental' to a
+sphere; the atomic program will generate a self-consistent potential for
+a specified set of moments and E$_\nu $'s and generate potential
+parameters from it.
+
+From the point of view of the bands, the Hamiltonian is completely
+specified by the potential parameters (and the structure constants).
+These are fundamental to the band program; it will generate moments from
+the eigenvectors of the Hamiltonian.  Full self-consistency is achieved
+when the `input moments' coincide with the `output moments', or
+equivalently when the input pp's coincide with the output pp's.
+
+The ASA program can start equally as well from either potential
+parameters or moments, though it is generally easier to start from the
+moments, if no prior information is available.  This is because one can
+usually begin with a very simple starting guess (choosing the zeroth
+moment to be the charge of the free atom, the first and second to be
+zero) that is usually good enough to iterate towards self-consistency.
+
+If potential parameters are available, you may choose to
+begin directly with a band calculation and need not worry about the
+moments. If you wish to make a self-consistent
+calculation, you must also supply the principal quantum numbers for each
+$\ell $ channel in the so-called P number described in the following
+paragraphs.
+
+To make a sphere self-consistent one needs the moments and also to
+specify the boundary condition on the wave function at the sphere
+radius, or the E$_\nu $ of the wave function $\phi $.  For a given
+potential, there is a unique correspondence between the logarithmic
+derivative D$_\nu $ at the sphere radius and E$_\nu $, so in
+principle, it is possible to specify either one.
+
+There is a set of numbers called P (one for each $\ell $ channel) that
+supplies the information about both the principal quantum number and the
+logarithmic derivative, D. P is defined as:
+P = .5 - atan(D$_\nu $)/$\pi $ + n where n (its integer part) is the
+principal quantum number; its fractional part varies smoothly from 0
+(for the bottom extreme of the band for that principal quantum number)
+to 1 (the top extreme of the band), and can be thought of as a
+`continuously variable' principal quantum number.  Here is a table of
+P$_n$ as function of D$_\nu $: D$_\nu $ 10 5 1 0 -1 -2 -3 -4 -10 P$_n$
+.03 .06 .25 .5 .75 .85 .90 .92 .97
+
+P must be supplied to the atom program.  The fractional part of P is
+automatically supplied by the output of a band calculation (provided
+the token IDMOD in category CLASS is not 1),
+but you must supply P (in addition to the moments Q) if
+you choose to begin with moments.  P, together with the moments Q can be
+input directly through the control file.  A word on choices for the
+fractional part of P: .3 is quite free- electron-like and suitable for
+free-electron-like $\ell $ channels such as Si d electrons, while .8 is
+quite tight-binding-like and suitable for deep states like Cu d orbitals.
+If there is no information from the very beginning, .5 is a suitable
+choice.
+
+In self-consistency cycles, you have a choice, through the parameter
+IDMOD described below, regarding the related pair of parameters P and
+E$_\nu $.  You may let P and E$_\nu $ float to the center of gravity
+of the occupied part of the band (most accurate for self-consistent
+calculations); this is the default.  You may also freeze alternatively P
+or E$_\nu $ in the self-consistency cycle.
+
+The problem of `ghost' bands can be overcome by using the downfolding
+procedure.  Orbitals are separated in lower, intermediate and higher
+sets. By switching on the automatic downfolding procedure,
+this choice is done
+automatically by the program.  Lower waves contribute to the dimension
+of the Hamiltonian matrix, H, and the overlap matrix, O, and carry
+charge.  Intermediate waves do not contribute to the dimension of H and
+O, but carry charge.  Higher waves are thrown away altogether.  If it
+is not known how to separate the orbitals the automatic downfolding can
+be switched on before the self-consistency cycle.  After a few
+iterations, the downfolding indices don't change and if it is desired
+the cycle can be stopped and started again with the proper division into
+lower, intermediate, and higher set.
+Calculations using the automatic downfolding should be
+checked carefully.  The token which makes the decomposition is
+IDXDN.\\
+IDXDN = 0 : automatic downfolding \\
+IDXDN = 1 : low orbitals \\
+IDXDN = 2 : intermediate orbitals \\
+IDXDN = 3 : higher orbitals\\
+More about this below under category CLASS and token IDXDN.
+
+%\input{window}
+\section{Accurate band structure away from the center of gravity}
+\label{window}
+
+Sometimes it is necessary to get accurate bands in a small energy range
+e.g. around the Fermi energy, for an accurate description of the Fermi
+Surface or in an energy range far from the center of gravity of the
+partial waves.  In such cases the potential parameters have to be
+recalculated with new E$_\nu $'s for the SCF potential.
+
+After the self-consistent calculation which has generated atomic files
+with potential parameters and potentials, one `iteration' is performed
+with the following changes: In the CTRL file the E$_\nu $'s are
+changed, and the tokens
+NITATOM=1 and Q=BAND in category OPTIONS.  Furthermore, the tokens
+BETA=0 BROY=F NIT=1 BEGMOM=T and CNTROL=F in category START.  With
+these parameters {\em lm.run}
+produces a BAND file with the new bands and eigenvectors, which may be
+used for a DOS calculation.  It also produces atomic files with the new
+potential parameters which may be used for calculation of energy bands
+along symmetry lines.
+
+Alternatively one can change the E$_\nu $'s in the CTRL file and run
+{\em lmbnd.run}, since this will recalculate the potential parameters.
+The Fermi energy is, however, not recalculated.
+
+%\input{frozen}
+\section{Frozen potential calculations}
+\label{frozen}
+
+In the ASA it is easy to calculate for instance structural energy
+differences. This is done by the so-called frozen potential technique.
+Assume that we want to calculate the structural energy difference
+between fcc and bcc copper. First a self-consistent calculation for
+fcc copper is performed in the usual way and the total energy and a
+potential is obtained. The potential is inserted in the bcc structure
+with the same atomic volume and the total energy is calculated without
+iterating to self-consistency i.e. keeping the potential frozen. The
+total energy difference in the two calculations is the structural
+energy difference.
+
+The second step is performed in the following way: The atomic file
+containing the frozen potential and potential parameters is not changed,
+but the CTRL file is.
+
+In category START: ITER=1, so that only one iteration is performed
+and BEGMOM=F, so that the program will start by making the hamiltonian
+and overlap matrices. Eigenvalues and eigenvectors will be calculated
+and from the latter the moments are obtained.
+
+In category START: NMIX=0 so that linear mixing is effective and BETA=1
+to ensure that the moments are not mixed with the previous ones.
+
+In category CLASS: IDMOD=2 for all ${\ell }$ channels so that the
+E$_{\nu }$'s are not shifted to the new center of gravity.
+
+In category OPTIONS: NITATOM=0 so that only one incomplete loop in the
+atomic program is performed. This produces the contribution to the
+total energy from the sphere.
+
+
+%\input{spin}
+\section{Spin polarized calculations}
+\label{spin}
+
+A self-consistent spin-polarized calculation can be started just like a
+non spin-polarized (hereafter called NM) calculation, except that
+NSPIN=2 in Category OPTIONS
+and the starting moments for up and down spins in Category START are
+made different.
+
+Often it is, however, faster first to perform a self-consistent NM
+calculation and then using this to start the
+spin-polarized calculation.
+
+After the self-consistent NM calculation has been
+performed the atomic files contain
+the self-consistent moments, potential parameters and
+potentials. These have to be doubled (one set for each spin)
+and changed, before the spin-polarized iterations can begin.
+This can be done by
+changing NSPIN=1 to NSPIN=2 in Category OPTIONS and VERBOS=50
+in Category IO and
+running {\em lmctl.run}, which inserts the doubled moments (devided
+by two) and potential parameters from the atomic files into the CTRL
+file. The potential parameters or the moments then have to be changed
+so that the two spin directions become different. Probably the most
+predictable is to change the moments. Example: Assume paramagnetic Ni
+has 9 $d$-electrons, then after {\em lmctl.run} the zeroth $d$ moments
+for up and down spin are 4.5. We guess that the magnetic moment is
+0.6 Bohr magnetons and the up-spin moment is changed to 4.8 and the
+down-spin moment is changed to 4.2. The spin polarized iterations
+are then started
+using these values in the CTRL file by setting BEGMOM=T and CNTROL=T
+in Category START.
+
+The antiferromagnetic (AFM) calculation is different from the
+ferromagnetic and antiferrimagnetic calculations because in the latter
+two cases two band structure calculations have to be performed, one for
+spin-up and one for spin-down. In the AFM case the two band structures
+are identical, but the moments and potential parameters for one
+sublattice and say spin-up are the same as those for the other
+sublattice and spin-down. The program can take advantage of this by
+performing only one band structure calculation and interchanging the
+resulting moments. This is achieved by setting the token AFM=T in
+category OPTIONS. It should be noticed that one is {\em not} free to
+chose the order in which the atoms occur in the CTRL file. With the
+atomic order in the first sublattice chosen, the order of the second
+sublattice must be the same. Example: In NiO the spin-up sublattice
+consists of Ni-spin-up and O-spin-up and the spin-down sublattice
+consists of Ni-spin-down and O-spin-down. If Ni-spin-up is the first
+and O-spin-up the second in the CTRL file, then Ni-spin-down must
+be the third and O-spin-down must be the fourth atom. As described
+above it may be advantageous to start the spin-polarized calculations
+from a self-consistent NM calculation. This could be
+done as indicated above, but since usually there are twice as many
+atoms in the AFM case as in the NM case, it may be more convenient to
+use the program {\em chspin.run} in the main directory to produce
+`spin-polarized' atomic files from NM ones. To use
+this, just type {\em chspin.run}. It will ask for the name of the
+`non-spin-polarized' input file (let us call it NI) and the spin
+direction in the output file (U, for up or D, for down). It will
+produce a file with the name NIU or NID and with the same atom name in
+the file (NIU or NID). In this file the moments, the potential
+parameters, and the potentials are doubled (the moments divided by
+two). The potential parameters or the moments then have to be changed
+just as in the ferro-magnetic case described above. The extra atoms
+are then inserted in category SITE and CLASS
+BEGMOM=T and CNTROL=F in category START.
+
+
+
+%\input{plot}
+
+\section{Plot programs}
+\label{plot}
+All programs for simple two-dimensional plots are based on the public
+domain program Gnuplot (Copyright (C) 1986 - 1993 Thomas Williams,
+Colin Kelley), which is part of the LMTO distribution.
+
+\subsection{Gnuplot}
+\label{gnuplot}
+Gnuplot is a command-line driven interactive plotting utility
+for UNIX, MSDOS and VMS platforms.  The software is copyrighted but
+freely distributed (i.e., you don't have to pay for it).  It was
+originally intended for
+visualization of mathematical functions and data.  Gnuplot
+supports many different types of terminals, plottersx, and printers
+(including many color devicesx, and pseudo-devices like LaTeX) and is
+easily extended to new devices. The `GNU' in gnuplot is
+NOT related to the Free Software Foundation, the naming is just a
+coincidence (and a long story). Thus Gnuplot is not covered by the GNU
+copyleft, but rather by its own copyright statement, included in all
+source code.
+The Gnuplot package comes with makefiles for the following UNIX platforms:
+\begin{enumerate}
+\item Apollo running SR10.3 with Apollo's X11
+\item DEC3100/5000 running DEC OSF/1 v1.0
+\item DEC3100/5000 running Ultrix 3.1d with MIT's X11
+\item HP/9000 700 series running HP/UX 8.0 with MIT's X11R4
+\item Sun sparcstation running SunOS 4.1 with suntools (with and without X11)
+\item Silicon Graphics IRIS4D machines (with and without X11)
+\item NeXT Cube and Slab running NeXTOS 2.0+ (with and without X11)
+\item ATT 3b1 machines (with and without X11)
+\item 386 machines running 386/ix or ISC 2.2 (with and without T.Roell X386)
+\item IBM RS/6000 running AIX 3.2 with xlc 1.2 or xlc 1.1
+\item Cray Y-MP or Cray-2 running Unicos 6.0 or 6.1 (with and without X11)
+\item Sequent Dynix/PTX with MIT X11
+\item Sequent Symmetry (DYNIX 3) with X11
+\item Convex 9.0 with MIT X11
+\item KSR1 running DEC OSF/1 v1.0 (use make -j 16)
+\item LINUX with XFree86-1.2
+\item VAX-VMS
+\end{enumerate}
+The following table  summarizes most of the terminals
+(output formats) supported by Gnuplot Release~3.5.
+\begin{tabular}{r l}
+            table & Dump ASCII table of X Y [Z] values to \\
+                  & output\\
+            corel & EPS format for CorelDRAW\\
+            eepic & EEPIC -- extended LaTeX picture \\
+                  & environment\\
+            emtex & LaTeX picture environment with \\
+                  & emTeX specials\\
+     epson-180dpi & Epson LQ-style 180-dot per inch \\
+                  & (24 pin) printers\\
+      epson-lx800 & Epson LX-800, Star NL-10, NX-1000, \\
+                  & PROPRINTER ...\\
+\end{tabular}
+\begin{tabular}{r l}
+          hp2623A & HP2623A and maybe others\\
+           hp2648 & HP2648 and HP2647\\
+          hp7580B & HP7580, and maybe other HPs (4 pens)\\
+           hp500c & HP DeskJet 500c, [75 100 150 300] \\
+                  & [rle tiff]\\
+             hpgl & HP7475 and (hopefully) others (6 pens)\\
+           hpljii & HP Laserjet series II, [75 100 150 300]\\
+             hpdj & HP DeskJet 500, [75 100 150 300]\\
+             hppj & HP PaintJet and HP3630 \\
+                  & [FNT5X9 FNT9X17 FNT13X25]\\
+\end{tabular}
+\begin{tabular}{r l}
+    kc/km-tek40xx & MS-DOS Kermit Tek4010 terminal \\
+                  & emulator - color/monochrome\\
+            latex & LaTeX picture environment\\
+              mif & Frame maker MIF 3.00 format\\
+          nec-cp6 & NEC printer CP6, Epson LQ-800 \\
+                  & [monocrome color draft]\\
+              pbm & Portable bitmap [small medium large] \\
+                  & [monochrome gray color]\\
+             pcl5 & HP LaserJet III [mode] [font] [point]\\
+       postscript & PostScript graphics language \\
+                  & [mode fontname font-size]\\
+\end{tabular}
+\begin{tabular}{r l}
+          pslatex & LaTeX picture environment with \\
+                  & PostScript specials\\
+         pstricks & LaTeX picture environment with \\
+                  & PSTricks macros\\
+              qms & QMS/QUIC Laser printer \\
+                  & (also Talaris 1200 and others)\\
+            regis & REGIS graphics language\\
+          tek410x & Tektronix 4106, 4107, 4109 and 420X \\
+                  & terminals\\
+          tek40xx & Tektronix 4010 and others; \\
+                  & most TEK emulators\\
+\end{tabular}
+\begin{tabular}{r l}
+          texdraw & LaTeX texdraw environment\\
+             tpic & TPIC -- LaTeX picture environment \\
+                  & with tpic specials\\
+            vttek & VT-like tek40xx terminal emulator\\
+          X11,x11 & X11 Window System\\
+\end{tabular}
+
+If there is access to one of the platforms listed above and one of the
+supported terminals connected to it, all that needs to be done is
+to compile
+and install Gnuplot on the target machine (read the File 0INSTALL for
+details).
+
+\subsection {Common features of the plotting programs}
+
+Five interface programs convert the output of the LMTO package to a format
+suitable for Gnuplot and generate a command file where all options are set:\\[5mm]
+
+\begin{tabular}{ l l }
+{\bf gnucharge.run} & Charge density or ELF plot\\
+{\bf gnupot.run}    & Hartree potential plot\\
+{\bf gnubnd.run}    & Band structure plot\\
+{\bf gnudos.run}    & Density of states plot\\
+{\bf gnufs.run}     & Fermi surface plot\\[5mm]
+\end{tabular}
+
+These programs will be described in detail below. There are, however, some
+common features which will be described first.
+\par
+Out of the variety of output devices and media, the most common ones are
+supported in the programs. Starting one of the programs results in the
+following prompt:
+\begin{verbatim}
+  Enter output device:
+   1 = Postscript (default)
+   2 = HP-GL pen plotter
+   3 = HP Laserjet III (PCL5)
+   4 = PC screen (vt220 emulation)
+   5 = X-Windows
+\end{verbatim}
+
+Depending on the choice the following output is created:
+\begin{enumerate}
+\item A Postscript file named {\it charge.ps, pot.ps, bnds.ps, dos.ps}
+ or {\it fs.ps}. This file can be send to any Postscript printer or
+ be viewed
+ with Display Postscript or Ghostview.
+\item A file named {\it charge.hpgl, pot.hpgl, bnds.hpgl, dos.hpgl} or
+ {\it fs.hpgl} suitable for all pen-plotters and laserprinters that understand
+ HPGL (Hewlett-Packard Graphics Language).
+\item A file named {\it charge.pcl, pot.pcl, bnds.pcl, dos.pcl} or
+ {\it fs.pcl} suitable for all Hewlett-Packard laserprinters and compatibles.
+\item Direct output to any vt220 compatible terminal including PCs
+  emulating a vt220 (Tektronics 4014 and compatibles are also supported).
+\item Direct output to a local or remote X-Window. If the
+  program is used remotely, make sure that the remote host has
+  permission to use
+  the local display (xhost +localdisplayname) and set the environment
+  variable DISPLAY to `localdisplayname:screennumber'.
+\end{enumerate}
+
+If the parameters have to be changed (e.g. Encapsulated Postscript instead
+of Postscript) or another terminal supported by Gnuplot has to be
+added, this can easily be done by
+changing the source code where the line "set term ..." is written
+to the Gnuplot command file. Refer to the Gnuplot manual for details.\\
+
+All programs generate intermediate files containing the plot data and
+a commandfile with all the commands and options necessary. The names of
+these files are listed in the detailed description for each program below.
+These files will remain on the disk if the executables (*.run) are used
+directly, and that will allow some fine-tuning by editing the command
+file (*.GNU).\\
+
+For routine plots, however, it is better to run the shellscripts *.exec,
+which call Gnuplot immediately after generating the plot data and delete
+all intermediate files afterwards.
+
+\subsection {Charge density and ELF plot}
+\label{charplot}
+The program {\it gnucharge.run} generates plots of the
+calculated charge density or the Electron Localization Function (ELF).
+The program reads the files RHO and ELF created by {\it lm.run} in charge mode
+(CHARGE=T in category OPTIONS, ELF=T in category CHARGE) and creates the plot
+data file CHARGE.DAT and the command
+file CHARGE.GNU.
+After the selection of the output device follows the question:
+\begin{verbatim}
+generate a charge density(t) or ELF plot(f)?
+\end{verbatim}
+Entering t (logical true) or / (End-of-record) selects a charge density plot,
+whereas f (logical false) selects a plot of the ELF.
+In the next step the plot data are read in and the minimum and maximum are
+determined:
+\begin{verbatim}
+ Number of grid-points:  2821
+ the charges range from .660E-03 to .581E+01
+\end{verbatim}
+By default the plot range extends from the minimum to the maximum of the data.
+However, you can modify the range by entering two scalars bounding the
+new interval:
+\begin{verbatim}
+  enter new min, max or / for default
+\end{verbatim}
+The following question concerns the number of isocontour lines to be drawn
+\begin{verbatim}
+ how many contours?(default is 11)
+\end{verbatim}
+You may enter any number between 2 and 98 or / to accept the default.
+The iso contours are now equally spaced from minimum to maximum including
+the upper and lower bound. Assuming 11 lines for a minimum of 0.0 and a maximum
+of 1.0 results in contours representing the values 0, 0.1, 0.2 ... , 0.9, 1.0.
+The next question defines the nature of the plot:
+\begin{verbatim}
+ draw a 3d-surface(t) or not(f)?(default: f)
+\end{verbatim}
+Entering t (logical true) places a 3d surface with hidden-line-removal on top
+of the contour plot, whereas f (logical false) or / lead to a simple
+contour plot.
+Now the plotfile or the plot window should be generated.\\
+
+{\it Important notice: Gnuplot does not retain proper x-y-scaling for most
+     output formats unless your plot is quadratic. You generally have
+     to scale the plot manually by editing the directive ''set size ...''
+     in CHARGE.GNU.}
+
+\subsection {Hartree potential plot}
+\label{hartplot}
+
+The program {\it gnupot.run} generates plots of the superimposed atomic
+Hartree potentials of the free atoms. This plot can be useful to check
+the estimate of the sphere radii performed by {\it lmhart.run}.
+The program reads the file POT created by {\it lmhart.run} for the plane
+specified in the PLOT category in the CTRL file and creates the plot data
+file GPOT.DAT and the command file POT.GNU.
+After the selection of the output device the plot data are read in and the
+minimum and maximum are determined:
+\begin{verbatim}
+lines:  2700
+time for reading pot:  1.85
+the potential range is from -.1E+7 to -.829E-1
+\end{verbatim}
+By default the plot range extends from the minimum to the maximum of the data.
+Since these potentials usually cover several orders of magnitude, it is
+advisable to modify the range by entering two scalars bounding the
+new interval (e.g. -5.0 0.0) after this prompt:
+\begin{verbatim}
+  enter new min, max or "/" for default
+\end{verbatim}
+The following question concerns the number of isocontour lines to be drawn
+\begin{verbatim}
+ how many contours? (default is 11)
+\end{verbatim}
+You may enter any number between 2 and 98 or / to accept the default.
+The iso contours are now equally spaced from minimum to maximum including
+the upper and lower bound as explained in the {\it gnucharge} section.
+The next question defines the nature of the plot:
+\begin{verbatim}
+ draw a 3d-surface(t) or not(f)?(default: f)
+\end{verbatim}
+Entering t (logical true) places a 3d surface with hidden-line-removal on top
+of the contour plot, whereas f (logical false) or / lead to a simple
+contour line plot.
+Finally you are prompted for a 40-character title string for the plot:
+\begin{verbatim}
+ enter plot title :
+\end{verbatim}
+Now the plotfile or the plot window should be generated.\\
+As stressed in the {\it gnucharge} section, Gnuplot may change the x-y-scaling.
+
+\subsection {Band structure plot}
+\label{bandplot}
+
+The program {\it gnubnd.run} generates plots of the band structure along the
+symmetry lines defined in the SYML category of the CTRL file.
+The program reads the CTRL file, the BNDS file and, if FATBAND=T in the
+category options in the CTRL file,
+the file EIGN. The latter two are created by
+{\it lmbnd.run}. It creates the plot data files BNDS.DAT, FERMI.DAT and the
+command file BNDS.GNU. For an orbital projected bands plot BNDS2--4.DAT
+are created in addition.
+
+After the selection of the output device one is prompted for a
+40-character title string for the plot:
+\begin{verbatim}
+ enter title:
+\end{verbatim}
+followed by the definition of the energy unit:
+\begin{verbatim}
+ energies in Ryd.(f) or eV(t)? (default f)
+\end{verbatim}
+Entering t (logical true) selects electron volts, whereas f (logical false) or
+/ selects Rydberg. The next prompt permits you to shift the origin of
+the energy scale to the Fermi energy:
+\begin{verbatim}
+  energies relative to EF (t)? (default f)
+\end{verbatim}
+Depending on the choice of symmetry lines and energy range it may be
+advantageous to plot the band structure in portrait mode instead of the
+default landscape mode:
+\begin{verbatim}
+  landscape plot (t) ? (default t)
+\end{verbatim}
+To achieve this enter f (logical false) after this prompt. If
+subsequent points of the same band should not be connected by a line,
+enter f (logical false) at the next prompt:
+\begin{verbatim}
+  energies connected by lines (t)? (default t)
+\end{verbatim}
+The decision whether orbital projected bands are to be plotted or not is
+the next issue:
+\begin{verbatim}
+  plot orbital character(t)? (default f)
+\end{verbatim}
+Enter t (logical true) to plot orbital projected bands, whereas f
+(logical false) or / result in an ordinary band plot. If the fat bands
+option is not used you may skip to the modification of the energy range
+below. If the fatband plot option is chosen, the prompted is:
+\begin{verbatim}
+Change coordinate system? Enter Euler angles:
+alpha, beta, gamma(units of Pi).
+If nochange: enter "/"
+\end{verbatim}
+If the internal coordinate system should be changed, enter the Euler
+angles$^{11}$.
+Enter / to retain the current orientation. Now the atoms
+whose orbitals should be displayed fat should be given:
+\begin{verbatim}
+no coordinate transformation!
+Enter orbital character plotted as "fatbands"
+First, enter name(s) of atom(s) format(20a4)
+followed by <enter> and "/" on next line
+\end{verbatim}
+Enter the names of the atoms as specified in the CLASS category of the CTRL
+file separated by blanks. Enter `/' on the next line. If there are several
+atoms of this class, can be selected:
+\begin{verbatim}
+RB1
+Following atom(s) selected RB1
+There are  6  atoms of type RB1
+Specify which one(s) to select, e.g. 1 3 7 for
+the first, third, and seventh, followed by "/"
+\end{verbatim}
+Enter a list of integers followed by `/'. Next the orbitals
+to be included in the fatband plot should be given:
+\begin{verbatim}
+For each atom specify orbital number from list:
+NB! Orbitals are in the new coordinate system!
+s  y  z  x  xy  yz  3z^2-1  xz  x^2-y^2
+1  2  3  4   5   6     7     8     9
+y(3x^2-y^2) xyz y(5z^2-1) z(5z^2-3)
+     10      11   12        13
+ x(5z^2-1) z(x^2-y^2) x(3y^2-x^2)
+     14         15          16
+RB1 number 1 enter number(s) followed by "/":
+\end{verbatim}
+Again, enter a list of integers followed by `/'. This step is repeated for
+all selected atoms of all selected classes.
+Now all fat band specific options have been set. The input files are read in
+and some information about them is displayed:
+\begin{verbatim}
+ Bands= 44 Fermi Energy= -.1426
+ Lattice const.=29.589 Spins=1
+ nq1=   35
+ nq1=   40
+ nq1=   20
+ nq1=   30
+ nq1=   25
+ nq1=   45
+ nq1=    0
+ ebot=-.3864 etop=.3131 eferm=-.14258
+   nq=  195   nline=    5
+ default emin and emax =  -1.0 1.0
+\end{verbatim}
+If band structure plot should be limited to a fraction of the
+calculated energy range the new boundaries may be entered after this
+prompt:
+\begin{verbatim}
+ enter emin, emax
+\end{verbatim}
+Entering / instead of two scalars selects the whole range shown above.
+Now the plotfile or the plot window should be generated.\\
+
+{\it Important notice: Gnuplot is currently not capable of handling more than
+one font per plot. Therefore it is impossible to mix greek and roman
+letters and e.g. the $\Gamma$ point is represented by $G$.
+If the output is postscript, however, it is possible to edit the file
+bnds.ps and replace the sequence\\ {\tt ( G ) Cshow}\\ by \\
+{\tt /Symbol findfont 180 scalefont setfont\\ ( G ) Cshow\\ /Times-Roman
+findfont 180 scalefont setfont}.
+
+One can  move the label of the
+y-axis closer to the plot, simply by changing the line\\
+{\tt currentpoint gsave translate 90 rotate 0 0 moveto ( Energy \(eV\)) Cshow}\\
+to\\
+{\tt currentpoint gsave translate 90 rotate 0 -700 moveto ( Energy \(eV\)) Cshow}.\\
+}
+\subsection {Density of states plot}
+\label{dosplot}
+The program {\it gnudos.run} generates total or partial density of states plots.
+The program reads the file DOS created by {\it lmdos.run} and creates the plot
+data files DATA.DOS, FERMI.DOS and DOS.GNU.
+After the selection of the output device one is prompted for the energy
+units to be used:
+\begin{verbatim}
+ energies in Ryd.(f) or eV(t)? (default f)
+\end{verbatim}
+Entering t (logical true) selects electron volts, whereas f (logical false) or
+/ selects Rydberg. The next prompt allows a shift of the energy
+origin to the Fermi energy:
+\begin{verbatim}
+  energies relative to EF (t)? (default is f)
+\end{verbatim}
+Now the DOS file is read and information about it's content is displayed:
+\begin{verbatim}
+ emin,emax= -1.0 .0, nopts=1001,
+ nd=24 efermi=-.1426
+
+ classes are: NA1  NA2  RB1  RB2  SB1  SB2
+ l's     are: s  p  d  f
+\end{verbatim}
+Next the projected DOS which should be added and plotted are selected:
+\begin{verbatim}
+ Enter class1-l1 class2-l2 .. to be added to DOS
+ Examples:   all   s   p   NA1-f  SB2-s
+\end{verbatim}
+If `all' is entered, then the total density of states is plotted. Entering
+the name of one or several atoms yields a plot of the partial density
+of states associated with these atoms. Entering the orbital character
+(s,p,d,f) makes a $\ell $-projected DOS which is summed over all atoms.
+If the name of a class of atoms augmented by  `-' and an orbital character
+symbol is entered, only the partial density of states associated with these
+atoms and this specific $\ell $-value is plotted. Additive combinations
+are also possible ( e.g. RB1 + s generates a plot of all s-orbitals
+present and all additional orbitals on the RB1 atoms).\\
+Following a table of all selected orbitals, a choice of the energy
+range is prompted:
+\begin{verbatim}
+Take: NA1-s NA1-p NA1-d NA2-s NA2-p NA2-df
+
+\end{verbatim}
+Following the table of all selected orbitals you are prompted for the
+relative weight of each partial DOS:
+\begin{verbatim}
+ Now enter weights for partial DOS
+ (default=1,1,..)
+ A weight of 1.0 for each partial DOS gives
+ the correct total DOS.
+\end{verbatim}
+Entering / for the default yields the correct total DOS, but you may enter a
+number for each partial DOS.
+Next you are prompted for the energy range:
+\begin{verbatim}
+ emin  , emax   =  -1.000    .000
+ if desired, enter new emin emax, / for default
+\end{verbatim}
+Entering / instead of two numbers selects the whole range shown above.
+The energy units are the ones selected in the first step. The default
+range is defined in the DOS category in the CTRL file.
+The next prompt permits changing the range of the density of states
+in exactly the same way:
+\begin{verbatim}
+ dosmin, dosmax =.0 1070.419
+ if desired, enter new min max,/ for default
+/
+  new values for emin, emax, dmin, dmax are:
+    -1.000       .000      .000     1080.0
+
+ title = all
+ if desired, enter new title / for default
+\end{verbatim}
+Finally a title for the plot can be given:
+Now the plotfile or the plot window should be generated.
+\subsection {Fermi Surface plot}
+\label{fsplot}
+{\it Important notice: This program is not yet fully tested for all lattices!
+     Please cross-check the results carefully!}\\
+
+The program {\it gnufs.run} generates a plot of Fermi surface
+contours in the unfolded
+irreducible part of the Brillouin zone.
+The program reads the file LMFS created by {\it lm.run} if FS=T in category
+OPTIONS and creates the plot data files Y1.DAT, Y2.DAT and the command
+file Y.GNU.
+After the selection of the output device one is prompted for a
+40-character title string for the plot:
+\begin{verbatim}
+ enter title:
+\end{verbatim}
+followed by a list of lattices and the prompt for a general
+scaling factor and the selection of the lattice:
+\begin{verbatim}
+Number  Lattice type
+1       sc
+2       bcc
+3       fcc
+4       orthor primitive
+5       orthor based centered
+        different setting for 1248
+6       orthor primitive,diff. sett.
+7       orthor based centered-real
+8       tetrag primitive kz=0 plane
+x9      tetrag primitive more planes
+        x=1->4 for different planes
+enter: scale and lattice
+      e.g.: 8.  4 (orthorhombic)
+      or    3.  8 (tetrag)
+      or    4. x9 (tetrag for several planes,
+               x selects which one)
+\end{verbatim}
+After the scale and the lattice is entered, a short summary of the
+input is printed and the plot is generated.
+
+%\input{copyri}
+\section{Copyright}
+\label{copyri}
+\noindent
+ The Stuttgart Tight-Binding LMTO-ASA program Version 4.7    \\
+    Copyright (C) 1998              \\
+\indent
+      Max-Planck-Institut f\"ur Festk\"orperforschung        \\
+\indent
+      O. K. Andersen                                         \\
+\indent
+      Heisenbergstrasse 1                                    \\
+\indent
+      D-70569 Stuttgart                                      \\
+\indent
+      Germany                                                \\
+
+\section{License Agreement}
+\label{license}
+\noindent
+All programs are subject to a license agreement. Be sure to read and 
+agree to the license BEFORE you use the programs. 
+\newline
+\newline
+\noindent
+INSTALLING THE PROGRAMS, YOU ARE CONSENTING TO BE BOUND BY AND ARE 
+BECOMING A PARTY TO THIS AGREEMENT. IF YOU DO NOT AGREE
+TO ALL OF THE TERMS OF THIS AGREEMENT, DO NOT INSTALL THE PROGRAMS. 
+\newline
+\newline
+\noindent
+LIMITATIONS ON USE 
+\newline
+\newline
+\noindent
+All programs are a free software for scientific and/or educational
+purposes. You are not allowed to redistribute it without prior written
+consent of the Copyright owner. It is
+illegal to commercially distribute these programs as a whole or
+incorporate any part of them into a commercial product. 
+\newline
+\newline
+\noindent
+DISCLAIMER OF WARRANTY 
+\newline
+\newline
+\noindent
+The programs are provided on an "AS IS" basis, without warranty of any
+kind, including without limitation the warranties that they are free of
+defects and fit for a particular
+purpose. The entire risk as to the quality and performance of the
+programs is borne by you. Should the programs prove defective in any
+respect, you and not Licensor assume
+the entire cost of any service and repair. 
+
+\appendix
+%\input{prepro}
+\section{The preprocessor}
+\label{prepro}
+
+A preprocessor {\em ccomp}
+provides a simplified, FORTRAN compatible version
+of C conditional compilation.  FORTRAN statements beginning with C\# are
+preprocessor directives; the ones implemented now are C\#ifdef,
+C\#ifndef, C\#else, C\#elseif, C\#endif (also C\#define defines a name).
+Directives C\#ifdef, C\#ifndef, C\#elseif, and C\#endif are followed by
+a name, e.g.  C\#ifdef CRAY. when C\#ifdef is false (either name is not
+defined or it lies within an \#if/\#endif block that is false),
+{\em ccomp}
+comments out until a change of state (new C\#ifdef, C\#ifndef, C\#else,
+C\#elseif, C\#endif encountered); C\#ifdef is true, {\em ccomp}
+uncomments
+lines following until another conditional compilation directive is
+encountered.
+
+Conditional compilation blocks may be nested.  As with C, {\em ccomp}
+distinguishes case.  Output is to standard out.
+
+There is a primitive facility to make logical expressions using the AND
+(\&) and OR ($|$) operators, such C\#ifdef john \& bill, or C\#ifdef
+john $|$ bill, is provided.  Precedence of operators is strictly left to
+right, so that john $|$ bill \& mike is equivalent to (john $|$ bill) \&
+mike, whereas john \& bill $|$ mike is equivalent to (john \& bill) $|$
+mike
+
+How {\em ccomp} determines whether to modify code:
+
+Whether the lines following a C\#ifdef, C\#ifndef, C\#else, C\#elseif,
+C\#endif need to be commented out or uncommented depends on whether they
+have been commented out in a previous pass.  This information is
+contained in a `C' following the directive, e.g.  C\#ifdefC, C\#ifndefC,
+C\#elseC, C\#elseifC, C\#endifC.  The preprocessor will set this, it is
+best advised to create any new blocks uncommented and let the
+preprocessor do the commenting.
+
+The main programs in directory MAIN: {\em lm.f, lmstr.f, lmbnd.f,
+lmdos.f, lmovl.f}, and {\em lmhart.f} are all obtained from
+and {\em lmall.f} in the main directory, by running the latter
+{\em ccomp} with different
+keywords defined.  To modify a main program change {\em lmall.f} and
+execute {\em make all}.  This will create all the main programs in MAIN
+and compile and link them.  Similarly for the atomic program a
+non-relativistic version may be generated using the keyword NONREL.
+
+The following line illustrates the use of the preprocessor (after it has
+been compiled by the C-compiler) IBM (CMS) machine: ccomp -uLM -dLMSTR
+LM LMSTR. `-uLM' means undefine LM i.e. remove LM specific lines.
+`-dLMSTR' means define LMSTR i.e. uncommend LMSTR specific lines. `LM'
+is the filename of the input file with file type FOR and file mode A.
+`LMSTR' is the output file.  Multiple defines and undefines are
+possible.
+%\input{machines}
+\section{Machine Dependencies}
+\label{machines}
+
+The LMTO programs have been written with portability in mind, and some
+effort was made to keep within ANSI-77 standards.  If you do find any
+compilation errors in the code as it stands, please report them, so that
+the code can be made as portable as possible.  There is some system
+dependence lying outside the purview of ANSI.  File handling is very
+operating-system dependent, and LMTO files have been kept as simple as
+possible to make the code as portable as possible.  All files are opened
+in function {\em fopna} in directory IOLIB,
+so whatever machine dependence there is
+should be confined to that subroutine.  Also, different machines have
+differing internal representations of their numbers.  In some places
+this is important, such as the function {\em derfc}.
+There is a collection of
+three functions in the math library, {\rm r1mach, d1mach) and
+{\em i1mach} that hold
+machine-specific information.  These must be set to the appropriate
+machine before compilation.  Besides the four routines,
+{\em fopna, i1mach, r1mach} and
+{\em d1mach}, a few occasional machine-dependencies are found.
+Perhaps the most important exception occurs in routine {\em cnvt} in
+the IOLIB directory.
+There data read from the control file is converted from ASCII
+representation to the binary representation, using the FORTRAN internal
+read facility.  This read differs on different machines.  The
+unformatted read should be used if possible; if not an alternate
+formatted read is supplied.  This should be checked when installing this
+routine on a new compiler.  Routine {\em finits} (also in IOLIB) does
+some machine-dependent initialization.
+
+\subsection{Machine constants}
+
+The following machine dependent constants are used in the TB-LMTO prog.
+They are supplied in functions in {\em extens.f}:
+
+dmach(1)=1.d-99 [ smallest double precision number]
+
+dmach(2)=1.d+99 [ largest double precision number]
+
+dmach(3)=1.d-15 [ smallest number which added to 1.0 gives something
+different from 1.0 ]
+
+imach(2)=6 [ standard output channel ]
+
+imach(4)=6 [ standard error channel ]
+
+imach(6)=4 [ no. characters per integer ]
+
+imach(17)=1 [ no. integer words per real word ]
+
+imach(18)=2 [ no. integer words per double precision word ]
+
+%\input{ref}
+\begin{references}
+
+\bibitem{LMTO} O.K. Andersen, Phys. Rev. B {\bf 12}, 3060 (1975);
+O.K. Andersen, Europhysics News {\bf 12}, 4 (1981);
+O.K. Andersen, in {\it The Electronic Structure of Complex Systems},
+edited by P. Phariseau and W.M. Temmerman (Plenum Publishing
+Corporation, 1984); O.K. Andersen, O. Jepsen, and M. Sob, in
+{\it Electronic Band Structure and Its Applications}, edited by
+M. Yussouff (Springer-Verlag, Berlin, 1986); H.L. Skriver, {\it
+The LMTO Method}, (Springer-Verlag, Berlin, 1984).
+
+\bibitem{TBLMTO}  O.K. Andersen and O. Jepsen, Phys. Rev. Lett.
+{\bf 53}, 2571 (1984);
+O.K. Andersen, O. Jepsen, and D. Gl\"otzel, in
+{\it Highlights of Condensed-Matter Theory}, edited by F. Bassani,
+F. Fumi, and M.P. Tosi (North-Holland, New York, 1985);
+O.K. Andersen, Z. Pawlowska, and O. Jepsen, Phys. Rev. B {\bf 34%
+}, 5253 (1986);
+H.J. Nowak, O.K. Andersen, T. Fujiwara, O. Jepsen, and P. Vargas, Phys
+Rev. B {\bf 44}, 3577 (1991).
+
+\bibitem{DOWNF} W.R.L. Lambrecht and O.K. Andersen, Phys. Rev.
+B {\bf 34}, 2439 (1986); O.K. Andersen, T. Paxton, O. Jepsen, and M. van
+Schilfgaarde (to be published).
+
+\bibitem{tetra} O. Jepsen and O.K. Andersen, Solid State Commun.
+{\bf 9}, 1763 (1971) and Phys. Rev. B {\bf 29}, 5965 (1984);
+P. Bl\"ochl, O. Jepsen, and O.K. Andersen, Phys. Rev. B {\bf 49},
+16223 (1994).
+
+\bibitem{Boston} O.K. Andersen, A.V. Postnikov, and S.Yu. Savrasov,
+Mat. Res. Symp. Proc. {\bf 253}, 37 (Materials Research Society 1992)
+Chapter V.
+
+\bibitem{LnI}  O. Jepsen and O.K. Andersen, Z. Phys. {\bf B 97},
+35 (1995).
+
+\bibitem{Symmetry}  C.J. Bradley and A.P. Cracknell, {\it The
+Mathematical Theory of Symmetry in Solids} (Clarendon, Oxford, 1972).
+
+\bibitem{Spacegr}  {\it International Tables for Crystallography},
+edited by Theo Hahn (Riedel, Boston, 1987) Vol. A
+
+\bibitem{Pearson}  {\it Pearson's Handbook of Crystallographic
+Data for Intermetallic phases}, by P. Villars and L.D. Calvert
+(American Society for Metals, Metal Park, Oh44073)
+
+\bibitem{AJK}   O.K. Andersen, O. Jepsen, and G. Krier;
+Exact Muffin-Tin Orbital Theory. In METHODS OF ELECTRONIC STRUCTURE
+CALCULATIONS edited by V. Kumar, O.K. Andersen, and A. Mookerjee
+(World Scientific, Singapore, 1994) p. 63
+
+\bibitem{Tinkham}  M. Tinkham, {\it Group Theory and Quantum
+Mechanics} (McGraw-Hill Book Company, New York, 1964) p. 102
+
+\end{references}
+
+\end{document}

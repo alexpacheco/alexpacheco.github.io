@@ -1,0 +1,77 @@
+HEADER    Si2, cubic face-centred
+VERS      LMASA-47
+IO        VERBOS=60 HELP=F WKP=F IACTIV=F ERRTOL=2 OUTPUT=LM ERR=ERR
+SYMGRP    NGEN=3 GENGRP=I:(.25,.25,.25) R4X:(.25,.25,.25) R3D
+          SPCGRP=Fd-3m USESYM=F
+STRUC     ALAT=10.246
+          PLAT=0.0 0.5 0.5
+               0.5 0.0 0.5
+               0.5 0.5 0.0 FIXLAT=T
+DIM       NBAS=4 NCLASS=2 NL=3 LDIM=10 IDIM=26 NSYMOP=48 NKP=29
+OPTIONS   NSPIN=1 REL=T CCOR=T NONLOC=F NRXC=1 NRMIX=2 CORDRD=F
+          NITATOM=30 CHARGE=F FATBAND=F AFM=F SEWALD=F FS=F
+          CARTESIAN=T WRIBAS=F Q=----
+CLASS     ATOM=Si Z=14 R=2.52242437 LMX=2 CONF=3 3 3 4 IDXDN=1 1 2
+                 IDMOD=0 0 0
+          ATOM=E  Z= 0 R=2.52242437 LMX=2 CONF=1 2 3 4 IDXDN=1 2 2
+                 IDMOD=0 0 0
+SITE      ATOM=Si POS=0.00 0.00 0.00
+          ATOM=Si POS=0.25 0.25 0.25
+          ATOM=E  POS=-.25 -.25 -.25
+          ATOM=E  POS=0.50 0.50 0.50
+SCALE     SCLWSR=T OMMAX1=.16 .18 .20 OMMAX2=.40 .45 .50
+STR       KAPPA2=0 RMAXS=3.2 NDIMIN=350 NOCALC=F IALPHA=0
+          DOWATS=F DELTR=.1 LMAXW=8
+          ATOM=Si SIGMA=.7 .7 .7
+          ATOM=E  SIGMA=.7 .7 .7
+START     NIT=30 BROY=T WC=-1 NMIX=1 BETA=.5
+          FREE=F CNVG=.00001 CNVGET=.00001 BEGMOM=T CNTROL=T
+          EFERMI=-.25 VMTZ=-.75
+          ATOM=Si  P=3.88 3.68 3.23
+                   Q=1.5 0.0 0.0
+                     2.0 0.0 0.0
+                     0.5 0.0 0.0
+              enu   =-.542 -.342 -.282
+              c     =-.816 0.025 1.318
+              sqrdel=0.360 0.330 0.351
+              p     =0.162 0.083 0.033
+              gamma =0.391 0.095 0.052
+          ATOM=E   P=1.5 2.5 3.5
+                   Q=0 0 0
+                     0 0 0
+                     0 0 0
+              enu   =-.726 -.265 0.544
+              c     =0.409 1.447 2.887
+              sqrdel=0.447 0.451 0.455
+              p     =0.031 0.014 0.008
+              gamma =0.439 0.119 0.061
+CHARGE    LMTODAT=T ELF=F ADDCOR=F SPINDENS=F CHARWIN=F EMIN=-2 EMAX=2
+PLOT      ORIGIN=0 0 0
+              R1=1 0 0 NDELR1=12
+              R2=0 1 0 NDELR2=12
+              R3=0 0 1 NDELR3=12
+          FORMAT=1
+BZ        NKABC=8 8 8 TETRA=T METAL=T TOL=.000001
+          N=0 W=.005 RANGE=5 NPTS=1001
+EWALD     NKDMX=250 AS=2 TOL=.000001
+RHOFIT    FIT=F KAPPA2=0 RMAXS=3.5 OUTPUT=5
+          ATOM=Si LMXRHO=2 SIGMA=.7 .7 .7
+          ATOM=E  LMXRHO=2 SIGMA=.7 .7 .7
+SCELL     PLAT=0.0 0.5 0.5
+               0.5 0.0 0.5
+               0.5 0.5 0.0 EQUIV=T
+HARTREE   BEGATOM=T LT1=2 LT2=2 LT3=2
+DOS       NOPTS=801 EMIN=-2 EMAX=2
+SYML      NQ=35 Q1=0.50 0.50 0.50 LAB1=L
+                Q2=0.00 0.00 0.00 LAB2=G
+          NQ=40 Q1=0.00 0.00 0.00 LAB1=G
+                Q2=0.00 1.00 0.00 LAB2=X
+          NQ=20 Q1=0.00 1.00 0.00 LAB1=X
+                Q2=0.50 1.00 0.00 LAB2=W
+          NQ=30 Q1=0.50 1.00 0.00 LAB1=W
+                Q2=0.50 0.50 0.50 LAB2=L
+          NQ=25 Q1=0.50 0.50 0.50 LAB1=L
+                Q2=0.00 0.75 0.75 LAB2=K
+          NQ=45 Q1=0.00 0.75 0.75 LAB1=K
+                Q2=0.00 0.00 0.00 LAB2=G
+FINDES    RMINES=.9 RMAXES=4 NRXYZ=48 48 48

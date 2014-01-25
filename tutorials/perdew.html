@@ -1,0 +1,88 @@
+<h2>Conversion Factors</h2>
+<br>1 hartree = 27.21 eV = 627.5 kcal/mol = 219475 cm<sup>-1</sup>,
+<br> 
+<br>1 bohr = 0.5292 &#8491;.
+<br>
+<h2>Ionization Potential</h2> 
+<br>I = E(singly positive atomic ion) - E(neutral atom).
+<br> 
+<h2>Atomization Energy of molecule</h2>
+<br>AE(static) = E(separate atoms) - E (non-vibrating molecule).
+<br>
+<h2> Zero-Point Energy</h2>
+<br>hbar*omega/2 = hbar*sqrt(k/mu)/2, where k is the spring constant and mu = M1*M2/(M1+M2) is the reduced mass.
+<br> 
+<h2>Atomization Energy of diatomic molecule</h2>
+<br>AE = E(separate atoms) - E(vibrating molecule)
+<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  = AE(static) - hbar*omega/2.
+<br> 
+<br>Experimental values from the Computational Chemistry Comparison and Benchmark Database (cccbd.nist.gov), for nitrogen:
+<br> 
+<br>I(N) = 14.5 eV
+<br>AE(N<sub>2</sub>) = 225.06 kcal/mol
+<br>d = 1.098 &#8491;
+ 
+<h2>Hands-On Exercise</h2>
+<h3>Compute these quantities from Gaussian09, using the PBE generalized gradient approximation for exchange and correlation, the 6-311++G(3df,3pd) basis set, and the ultrafine grid</h3>
+<ul>
+<li>Ionization Potential for N atom: E(N<sup>+</sup>) - E(N)
+<li>The static-nucleus 2*E(N) - E(N<sub>2</sub>) for a "scan" of bond lengths d = 0.8, 0.85, 0.90. ...1.20 &#8491; 
+<li>The static-nucleus equilibrium d for N<sub>2</sub>, from the zero of the Hellmann-Feynman force on each nucleus
+<li>The vibrational zero-point energy of N<sub>2</sub> at equilibrium AE(N<sub>2</sub>).
+ 
+<li>All species should be in their ground states.
+<li>Repeat Above set of calculations with other functionals
+<ul>
+<li>LSDA (PW91)
+<li>PBE1PBE (the PBE global hybrid)
+</ul>
+</ul>
+
+<h2>Solution</h2>
+<h4>Plot of Energy and Force as a function of Bond Length for N<sub>2</sub></h4>
+<img src="pbepbe.jpg" align="middle" height="480" width="800"/>
+<br>
+<br>
+<br>
+<h4>Tabulated Results</h4>
+<table border="1">
+<tr>
+<td>  </td> <td> PBEPBE </td> <td> PBE1PBE </td> <td> PW91PW91 </td> <td> Experimental</td>
+</tr>
+<tr>
+<td> E(N) (a.u.)</td><td>-54.5289567564</td><td>-54.5403219757</td><td>-54.5717754748</td><td></td>
+</tr>
+<tr>
+<td> E(N<sup>+</sup>) (a.u.)</td><td>-53.9873282078</td><td>-53.9996974612</td><td>-54.5717754748</td><td></td>
+</tr>
+<tr>
+<td> IP(eV) </td><td>14.7377</td><td>14.7104</td><td>14.7999</td><td>14.5</td>
+</tr>
+<tr>
+<td>Bond Length(&#8491;)[1]</td><td>1.103</td><td>1.09</td><td>1.102</td><td>1.098</td>
+</tr>
+<tr>
+<td> Atomization Energy(kcal/mol) </td> <td> 240.266982 </td><td>221.968515</td><td>239.460358</td><td>225.06</td>
+</tr>
+<table>
+<br>[1] This bond length correspond to the distance between the N atoms is the least and not the distance where F=dE/dR=0, so take the the value of bond length and Atomization Energy is not really correct but close. I'll show during the hands-on session how to find the distance where F=dE/dR=0.
+
+
+<br>
+<h4>Obtain distance, energy and force from scan calculation</h4>
+<ul><li>egrep -i 'de/dx =|scf done' n2-scan.log  | awk '{if ( $1 ~ /SCF/){printf " %15.8f",$5}else{printf " %9.4f %12.6f\n",$4,$7}}' > scan.dat </ul>
+<h4>Obtain Equilibrium Distance</h4>
+<ul>
+<li>gnuplot <a href="dft-workshop/plot.gnu">plot.gnu</a>
+<li>Obtain a fitting function for force and energy (see gnuplot file)
+<li>Obtain equilibrium distance from
+<ul>
+<li>Distance at which force is zero, or
+<li>Minimize energy function
+</ul>
+<li><a href="dft-workshop/n-n2-scan.mw">See maple worksheet for an example</a>
+<ul>
+<li> R<sub>eq</sub> = 1.102993706 &#8491; (from Force function)
+<li> R<sub>eq</sub> = 1.102185863 &#8491; (from Energy function)
+</ul>
+</ul>
