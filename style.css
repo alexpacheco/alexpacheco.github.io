@@ -49,43 +49,51 @@ body {
 	}
 
 #tabmenu {
-	color: #000;
-	position: absolute;
-	top: 80px;
-	padding: 0;
-	margin-left: 0px;
-	margin-top: 20px;
-	border-bottom: 0px solid black;
-	}
+    list-style:none; 
+    height:2em;
+    padding:0; 
+    margin:0; 
+    margin-top: 70px;
+    border: none;
+}
 
 #tabmenu li {
-	display: inline;
-	overflow: hidden;
-	margin:0;
-	border: 0;
-	list-style-type: none;
-	}
+    float:left; 
+    margin-right:0.13em; 
+}
 
-#tabmenu a, a.active {
-	color: #000000;
-	background: #bbbbbb ;
-	font: 16px/22px verdana, geneva, sans-serif;
-	font-weight: bold;
-	border: 1px solid black;
-	padding: 2px;
-	margin: 0 2px;
-	text-decoration: none;
-	}
+#tabmenu li a {
+    display:block;
+    padding:0 1em;
+    text-decoration:none;
+    border:0.06em solid #000;
+    border-bottom:0;
+    font:bold 1.2em/2em arial,geneva,helvetica,sans-serif;
+    color:#fdd043;
+    background-color:#461d7c;
 
-#tabmenu a.active {color: #000000; background: #ffffff; border: 1px solid black; z-index: 30;}
-/*
-#tabmenu a.active {color: #ffffff; background: #461d7c; border-top: 2px solid black; z-index: 30;}
-*/
+    /* CSS 3 elements */
+    webkit-border-top-right-radius:0.50em;
+    -webkit-border-top-left-radius:0.50em;
+    -moz-border-radius-topright:0.50em;
+    -moz-border-radius-topleft:0.50em;
+    border-top-right-radius:0.50em;
+    border-top-left-radius:0.50em;
+}
 
-#tabmenu a:hover {color: #000000; background: #ffffff; border: 1px solid black;}
-/*#tabmenu a:hover {color: #fdd023; background: #000000;}
-*/
-#tabmenu a.active:hover {background: black ; color: #fdd023;}
+#tabmenu li a:hover {
+    background:#0021a5; 
+    color:#ff4a00;
+    text-decoration:none;
+}
+
+#tabmenu li.active a, #tabmenu a.active {
+    background-color: #0021a5;
+    color: #ffa400;
+}
+#tabmenu li.active a:hover {
+    background: #461d7c;
+}
 
 
 /*
@@ -101,13 +109,12 @@ body {
 
 #content {
 	background: #ffffff;
-	margin-top: 5px;
 	margin-left: 40px;
 	margin-right: 20px;
-	padding-top: 20px;
+	margin-top: 1px;
 	padding-left: 25px;
 	padding-right: 25px;
-	width: 90%;
+	padding-top: 20px;
 /*
 	height: auto;
 	text-align: justify;
@@ -115,6 +122,7 @@ body {
 	margin-right: 280px;
 	padding: 120px 30px 0px 10px;
 */
+	width: 90%;
 	border: 1px solid black;
 	}
 
