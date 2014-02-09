@@ -138,6 +138,12 @@ body {
 
 #content h3 {color: #0021a5 ; text-align: left;}
 
+#content img {
+	height: 200px;
+	width: 150px;
+	margin-left: 20px;
+}
+
 
 
 #footer {
