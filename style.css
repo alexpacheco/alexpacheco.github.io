@@ -109,7 +109,7 @@ nav li.active a:hover {
 */
 
 #content {
-	background: #ffffff;
+	background: #e1d8b7;
 	margin-left: 40px;
 	margin-right: 20px;
 	margin-top: 0px;
@@ -209,13 +209,20 @@ footer a:hover {
 
 @media only screen and (min-width : 150px) and (max-width : 1024px)
 {
+   body {
+     font: 14px/20px verdana, geneva, sans-serif;
+  }
   .body {
     clear: both; 
     margin: 0 auto; 
     min-width: 150px;
     max-width: 961px;
    }
-  #content {width: 80%}
+  nav li {
+    font: bold 0.8em/1.2em arial,geneva,helvetica,sans-serif;
+  }
+
+  #content {width: 80%; margin-top: -14px;}
   #twocolumn { width: 100%;}
   #twocolumn img {
     min-width: 60px;
