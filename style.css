@@ -219,10 +219,10 @@ footer a:hover {
     max-width: 961px;
    }
   nav li {
-    font: bold 0.8em/1.2em arial,geneva,helvetica,sans-serif;
+    font: bold 1.0em/1.5em arial,geneva,helvetica,sans-serif;
   }
 
-  #content {width: 80%; margin-top: -14px;}
+  #content {width: 80%; margin-top: -5px;}
   #twocolumn { width: 100%;}
   #twocolumn img {
     min-width: 60px;
