@@ -7,7 +7,7 @@ body {
 	margin: 0;
 	padding: 0;
 	background: #e0e0e0;
-	font: 16px/24px verdana, geneva, sans-serif;
+	font: 13px/24px verdana, geneva, sans-serif;
 	}
 
 .body {
@@ -53,7 +53,7 @@ nav ul {
     height:2em;
     padding:0; 
     margin:0; 
-    margin-top: 61px;
+    margin-top: 70px;
     border: none;
 }
 
@@ -210,7 +210,7 @@ footer a:hover {
 @media only screen and (min-width : 150px) and (max-width : 1024px)
 {
    body {
-     font: 14px/20px verdana, geneva, sans-serif;
+     font: 13px/22px verdana, geneva, sans-serif;
   }
   .body {
     clear: both; 
@@ -218,11 +218,12 @@ footer a:hover {
     min-width: 150px;
     max-width: 961px;
    }
+/*
   nav li {
-    font: bold 1.0em/1.5em arial,geneva,helvetica,sans-serif;
+    font: bold 0.9em/1.2em arial,geneva,helvetica,sans-serif;
   }
-
-  #content {width: 80%; margin-top: -5px;}
+*/
+  #content {width: 80%; }
   #twocolumn { width: 100%;}
   #twocolumn img {
     min-width: 60px;
