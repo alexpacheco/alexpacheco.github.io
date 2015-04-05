@@ -1,45 +1,12 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Alex Pacheco</title>
-    <meta http-equiv="content-type"	content="text/html;	charset=utf-8"	/>
-    <link rel="stylesheet" type="text/css" href="style.css" media="all" />
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+---
+layout: page
+title: Training
+--- 
 
-  ga('create', 'UA-29580123-2', 'alexpacheco.us');
-  ga('send', 'pageview');
-
-</script>
-  </head>
-  
-  <body>
-    <div class="body">
-      <div id="container">
-	<header id="banner">
-	  <h1><img src="images/general/logo.gif"
-		   width="236" height="36" alt="Alex Pacheco" /></h1>
-	</header>
-	
-        <nav>
-	<ul>
-  	  <li><a href="index.html">Home</a></li>
-  	  <li><a href="aboutme.html">About</a></li>
-  	  <li><a class="active" href="training.html">HPC Training</a></li>
-  	  <li><a href="downloads.html">Downloads</a></li>
-	</ul>
-        </nav>
-      </div> 
-      
-      <div id="content">
-        <article>
-	<h1>HPC Presentations and Tutorials</h1>
-	The following are links to HPC training materials presented at various workshop/trainings.<br />	
-        <section>
-	<h2>LSU HPC Training Series</h2>
+## HPC Presentations and Tutorials
+	The following are links to HPC training materials presented at various workshop/trainings. 
+       
+### LSU HPC Training Series
 	<ul>
 	  <li><a href="https://drive.google.com/file/d/0B8JfYfXf7hnhM2M4NDIyMjItZmNlYS00ODZlLWFmNDctNGY2ZDhmZjUzMGRl">Globus Procedures on LONI Systems</a> (11/10/2010).</li>
 	  <li><a href="https://drive.google.com/file/d/0B8JfYfXf7hnhYTI2NDI4ZDUtNWViYy00MTc1LTllMjEtYjc3NjM1OGMzN2I4">Introduction to Computational Chemistry: Molecular Dynamics</a> (04/27/2011).</li>
@@ -63,10 +30,8 @@
 	  <li><a href="https://drive.google.com/file/d/0B8JfYfXf7hnhc0NuSkJqYkpIejQ">Introduction to Linux</a> (02/03/2014).</li>
 	  <li><a href="https://drive.google.com/file/d/0B8JfYfXf7hnhcnNITllCdU5uZWc">Modern Fortran (two part tutorial)</a> (02/19/2014 and 03/12/2014)</li>
 	</ul>
-        </section>
 	
-        <section>
-	<h2>LONI Workshop Presentations</h2>
+### LONI Workshop Presentations
 	<ul>
 	  <li><a href="https://drive.google.com/file/d/0B8JfYfXf7hnhOTQyNjcxMTQtZTk1NS00Mjg1LTgzYmUtOTBmMzdhYzA3MjRk">Globus Procedures on LONI Systems</a>, University of Louisiana at Lafayette (11/01/2010).</li>
 	  <li><a href="https://drive.google.com/file/d/0B8JfYfXf7hnhOThhYWM3MjEtMzU4ZS00MTc3LWJiN2ItNzFkNjNkNGMwOTJm">Introduction to Computational Chemistry</a>, Southern University, Baton Rouge (02/18/2011).</li>
@@ -79,52 +44,8 @@
 	  <li><a href="https://drive.google.com/file/d/0B8JfYfXf7hnhNXhJdExhMk1kcDA">Introduction to OpenMP</a>, 2<sup>nd</sup> Annual LONI Parallel Programming Workshop, Louisiana State University (06/10/2013).</li>
 	  <li><a href="https://drive.google.com/file/d/0B8JfYfXf7hnhSC1uQzktVjROWEU">Introduction to OpenACC</a>, 2<sup>nd</sup> Annual LONI Parallel Programming Workshop, Louisiana State University (06/10/2013).</li>
 	</ul>
-        </section>
 
-        <section>
-	<h2>Presentations at Other Workshops</h2>
+### Presentations at Other Workshops
 	<ul>
 	  <li><a href="https://drive.google.com/file/d/0B8JfYfXf7hnhNzRlMTBjNWItMzA0YS00YzJkLThiYWMtODMzN2NiZjUwNTll">High Performance Computing Resources at LONI and LSU</a>, 2011 DFT Workshop, Louisiana State University, Baton Rouge (07/23/2011).</li>
 	</ul>
-        </section>
-	
-        <section>
-	<h2>2011 DFT Workshop Hands-On Exercises</h2>
-	<ul>
-	  <li><a href="tutorials/perdew.html"> John Perdew's Hands-On Exercise</a>.</li>
-	  <li><a href="tutorials/qetut_instructions.html">Shobhana Narasimhan's Hands-On Exercise</a>.</li>
-	  <li><a href="tutorials/lmto.html">Tanusri Saha-Dasgupta's Hands-On Exercise</a>.</li>
-	</ul>
-        </section>
-        </article>	
-      </div> 
-      
-      
-      <footer>
-	<div id="altnav">
-<!--
-          <a href="http://www.lsu.edu">LSU</a> -
-          <a href="http://www.hpc.lsu.edu">HPC@LSU</a> -
-          <a href="http://www.lsu.edu/its">ITS</a> -
-          <a href="http://www.cct.lsu.edu">CCT</a> -
-          <a href="http://www.loni.org">LONI</a> -
-          <a href="http://www.hpc.lsu.edu/training">HPC Training</a> -
-          <a href="http://moodle.hpc.lsu.edu">HPC Moodle</a>
--->
-	</div>
-	<br />
-	<a href="http://validator.w3.org/check?uri=referer"><img src="http://www.w3.org/Icons/valid-xhtml10" alt="Valid XHTML 1.0 Strict" height="31" width="88" /></a>
-	<a href="http://jigsaw.w3.org/css-validator/check/referer">
-	  <img style="border:0;width:88px;height:31px"
-               src="http://jigsaw.w3.org/css-validator/images/vcss-blue"
-               alt="Valid CSS!" /></a>
-	<br />
-	Website designed by Alex Pacheco<br />
-	Contents and resources are opinions of the author only.<br />
-      </footer> 
-      
-    </div> 
-    <div id="foot">
-    </div>
-  </body>
-</html>
