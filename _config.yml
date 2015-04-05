@@ -1,0 +1,26 @@
+# Dependencies
+markdown:         redcarpet
+highlighter:      pygments
+
+# Permalinks
+permalink:        pretty
+relative_permalinks: true
+
+# Setup
+title:            Alex Pacheco
+tagline:          
+description:      
+url:              http://www.alexpacheco.us/
+baseurl:          
+
+author:
+  name:           'Alex Pacheco'
+  url:            http://www.alexpacheco.us
+
+#paginate:         
+
+# Custom vars
+version:          
+
+github:
+  repo:           https://github.com/alexpacheco
