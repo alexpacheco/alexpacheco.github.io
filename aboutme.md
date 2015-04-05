@@ -1,72 +1,28 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Alex Pacheco</title>
-    <meta http-equiv="content-type"	content="text/html;	charset=utf-8"	/>
-    <link rel="stylesheet" type="text/css" href="style.css" media="all" />
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+---
+layout: page
+title: About Me
+--- 
 
-  ga('create', 'UA-29580123-2', 'alexpacheco.us');
-  ga('send', 'pageview');
+## Education
+ * __B.Sc.__ St. Xavier's College, Mumbai, 1997
+ * __M.Sc.__ University of Pune, Pune, 1999
+ * __Ph.D.__ University of Florida, Gainesville, 2006
 
-</script>
-  </head>
-  
-  <body>
-    <div class="body">
-      <div id="container">
-	<header id="banner">
-	  <h1><img src="images/general/logo.gif"
-		   width="236" height="36" alt="Alex Pacheco" /></h1>
-	</header>
-	
-        <nav> 
-	<ul>
-  	  <li><a href="index.html">Home</a></li>
-  	  <li><a class="active" href="aboutme.html">About</a></li>
-  	  <li><a href="training.html">HPC Training</a></li>
-  	  <li><a href="downloads.html">Downloads</a></li>
-	</ul>
-        </nav>
-      </div> 
-      
-      <div id="content">
-        <section>
-	<h2>Education</h2>
-	<ul>
-	  <li><strong>B.Sc.</strong> St. Xavier's College, Mumbai, 1997</li>
-	  <li><strong>M.Sc.</strong> University of Pune, Pune, 1999</li>
-	  <li><strong>Ph.D.</strong> University of Florida, Gainesville, 2006</li>
-	</ul>
-	</section>
 
-	<section>
-        <h2>Employment</h2>
-        <ul>
-          <li><strong>Manager of Research Computing</strong>, Lehigh University (09/2014-present)</li>
-          <li><strong>HPC User Services Consultant</strong>, Louisiana State University (08/2010-09/2014)</li>
-	  <li><strong>Postdoctoral Fellow</strong>, Indiana University (10/2006-08/2010)</li>
-          <li><strong>Graduate Research &amp; Teaching Assistant</strong>, University of Florida (08/1999-09/2006)</li>
-        </ul>
-	</section>
+## Employment
+ * __Manager of Research Computing__, Lehigh University (09/2014-present)
+ * __HPC User Services Consultant__, Louisiana State University (08/2010-09/2014)
+ * __Postdoctoral Fellow__, Indiana University (10/2006-08/2010)
+ * __Graduate Research &amp; Teaching Assistant__, University of Florida (08/1999-09/2006)
 	
-        <section>
-	<h2>Research Interest</h2>
-	<ul>
-	  <li>Ab-Initio Molecular Dynamics</li>
-	  <li>Wavepacket Dynamics</li>
-	  <li>Spectroscopy</li>
-	  <li>Theoretical Method Development</li>
-	  <li>Scientific Computing</li>
-	</ul>
-	</section>
+## Research Interest
+ * Ab-Initio Molecular Dynamics
+ * Wavepacket Dynamics
+ * Spectroscopy
+ * Theoretical Method Development
+ * Scientific Computing
 	
-        <section>
-	<h2>Publications</h2>
+## Publications
 	<ul>
 	  <li>A. B. Pacheco, S. M. Dietrick, P. S. Stevens and S. S. Iyengar, "<a href="http://pubs.acs.org/doi/abs/10.1021/jp212330e">Pump-probe atom-centered density matrix propagation studies to gauge anharmonicity and energy repartitioning in atmospheric reactive adducts: Case study of OH + Isoporene and OH + Butadiene reaction intermediates</a>", <em>J. Phys. Chem. A</em> <strong>116</strong>, 4108 (2012).</li>
 	  <li>S. M. Dietrick, A. B. Pacheco, P. S. Stevens and S. S. Iyengar, "<a href="http://pubs.acs.org/doi/abs/10.1021/jp204511v">The influence of water on anharmonicity, stability and vibrational energy distribution of hydrogen-bonded adducts in atmospheric reactions: Case study of the OH + Isoprene reaction intermediate using <i>ab-initio</i> Molecular Dynamics</a>", <em> J. Phys. Chem. A</em> <strong>116</strong>, 399 (2012).</li>
@@ -79,8 +35,8 @@
           <li>First Principles Dynamics of Transient Light Absorption and Emission of Alkali Atoms Interacting with Rare Gas Atoms, <i>Ph. D. Thesis</i>, University of Florida (2006). (<a href="https://docs.google.com/open?id=0B8JfYfXf7hnhY2Y4YWY2ZWMtNDQ4ZS00YTg0LWE1NzgtOTQ3OGQzMzRlYjA5">PDF</a>)</li>
 	</ul>
 
-        <h2>Conference Presentations</h2>
-        <h3>Posters</h3>
+## Conference Presentations
+### Posters
         <ul>
           <li>A. B. Pacheco and S. S. Iyengar, <i>A Multi-Stage Ab-initio Quantum Wavepacket Dynamics Formalism for Electronic Structure and Dynamics in Open Systems</i>. 42nd MidWest Theoretical Chemistry Conference, West Lafayette, IN (2010). (<a href="https://docs.google.com/open?id=0B8JfYfXf7hnhYTI2ZGZkNjktZGNkMC00NmQ0LTgyOTAtMGJjYTMxZWNlMTFl">Abstract</a>) (<a href="https://docs.google.com/open?id=0B8JfYfXf7hnhMWI3MDk1NWYtNTQzYi00NDUzLWI5ZjYtMDlhODk5YzJlM2Iw">Poster</a>)</li>
           <li>A. B. Pacheco and S. S. Iyengar, <i>Quantum Wavepacket Ab-initio Molecular Dynamics Formalism for Calculating Electron Transport in Molecular Wires</i>. American Conference on Theoretical Chemistry Conference, Evanston, IL. (2008). (<a href="https://docs.google.com/open?id=0B8JfYfXf7hnhZDdmMjUyOGQtZDA1ZS00ZWVkLTg1YTAtMGRkMTU5OGZjNTMx">Abstract</a>) (<a href="https://docs.google.com/open?id=0B8JfYfXf7hnhNWJlOWJhMjgtZWIzNS00Nzg2LWE0NDMtYWY5NzVkMzlmODcx">Poster</a>)</li>
@@ -95,7 +51,7 @@
           <li>A. B. Pacheco and D. A. Micha, <i>Electronic State-to-State Collision Cross Sections using Transition Integrals</i>. 42nd Sanibel Symposium, St. Augustine, FL. (2002). (<a href="https://docs.google.com/open?id=0B8JfYfXf7hnhOWUyMmIwZjAtY2U0Mi00NzBkLWIwZDItMDJhZmY3MjJkYWQx">Abstract</a>) (<a href="https://docs.google.com/open?id=0B8JfYfXf7hnhMWNlMWQyMDctZjllNS00NzllLWEzMTMtNzk5NzU5NGRhNDJh">Poster</a>)</li>
         </ul>
 
-        <h3>Oral and Contributed Talks</h3>
+### Oral and Contributed Talks
         <ul>
           <li>A. B. Pacheco,&nbsp;<i>A Multi-Stage Ab-initio Wavepacket Dynamics Formalism for Electronic Structure and Dynamics in Open Systems</i>. Center for Computation and Technology, Louisiana State University, Baton Rouge, LA, June 10 (2010). (<a href="https://docs.google.com/open?id=0B8JfYfXf7hnhMDgzNzBjMDktY2Y4OC00NmViLTgyNjEtYWRmN2JhNjUwODBj">Abstract</a>) (<a href="https://docs.google.com/open?id=0B8JfYfXf7hnhODZkN2QxYTQtYmJiNi00ZjQ0LWIwOTAtYWVmNjlkZTY4YWE3">Slides</a>)</li>
           <li>A. B. Pacheco and S. S. Iyengar, <i>A Multi-Stage Ab-initio Wavepacket Dynamics Formalism for Electron Dynamics in Open Systems</i>. 41st MidWest Theoretical Chemistry Conference. Carbondale, IL. (2009).</span><span style="font-family:verdana,sans-serif">&nbsp;(<a href="https://docs.google.com/open?id=0B8JfYfXf7hnhMmRlZDI4NWYtNDNjNy00MmYwLTg3MGItZjViNjk4ZmY3NGE4">Abstract</a>) (<a href="https://docs.google.com/open?id=0B8JfYfXf7hnhNzNjNmY0MzItMjZjZi00YmVhLTk3MDAtMzVjYmFjZWE4Y2Q4">Slides</a>)</li>
@@ -103,34 +59,4 @@
           <li>D. A. Micha, A. Reyes, A. Pacheco and B. Thorndyke, <i>Time-Propagation of the Quantum-Classical Density Matrix for Electronically Excited Molecular Systems</i>. Amer. Chem. Soc. National Meeting, Anaheim, Ca. (2004).</li>
           <li>A. Reyes, D. A. Micha and A. Pacheco, <i>Electronic Excitation and Spin-Orbit Recoupling Cross Sections for Alkali-Atom/Noble Gas-Atom Collisions from a First Principles Quantum Dynamics</i>. Amer. Phys. Soc. DAMOP Meeting, Boulder, Co. (2003).</li>
         </ul>
-        </section>
-      </div> 
-      
-      <footer>
-	<div id="altnav">
-<!---
-          <a href="http://www.lsu.edu">LSU</a> -
-          <a href="http://www.hpc.lsu.edu">HPC@LSU</a> -
-          <a href="http://www.lsu.edu/its">ITS</a> -
-          <a href="http://www.cct.lsu.edu">CCT</a> -
-          <a href="http://www.loni.org">LONI</a> -
-          <a href="http://www.hpc.lsu.edu/training">HPC Training</a> -
-          <a href="http://moodle.hpc.lsu.edu">HPC Moodle</a>
--->
-	</div>
-	<br />
-	<a href="http://validator.w3.org/check?uri=referer"><img src="http://www.w3.org/Icons/valid-xhtml10" alt="Valid XHTML 1.0 Strict" height="31" width="88" /></a>
-	<a href="http://jigsaw.w3.org/css-validator/check/referer">
-	  <img style="border:0;width:88px;height:31px"
-               src="http://jigsaw.w3.org/css-validator/images/vcss-blue"
-               alt="Valid CSS!" /></a>
-	<br />
-	Website designed by Alex Pacheco<br />
-      </footer> 
-      
-    </div> 
-    <div id="foot">
-    </div>
-  </body>
-</html>
   
