@@ -3,7 +3,7 @@ layout: default
 title: Home
 --- 
 
-##  About Me
+##  Alex Pacheco
 I'm currently the Manager of Research Computing at Lehigh University. 
 
 From August 2010 to September 2014, I was a HPC User Services Consultant with HPC@LSU and LONI, helping users with  
