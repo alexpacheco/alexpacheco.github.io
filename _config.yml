@@ -10,12 +10,12 @@ relative_permalinks: true
 title:            Alex Pacheco
 tagline:          
 description:      
-url:              http://www.alexpacheco.us
+url:              http://www.alexpacheco.net
 baseurl:          /
 
 author:
   name:           'Alex Pacheco'
-  url:            http://www.alexpacheco.us
+  url:            http://www.alexpacheco.net
 
 #paginate:         
 
