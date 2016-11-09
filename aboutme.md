@@ -23,6 +23,7 @@ title: About Me
  * Scientific Computing
 	
 ## Publications
+ * J. Li, A. B. Pacheco, K. Raghavacharia and S. S. Iyengar, "[A Grotthuss-like proton shuttle in the anomalous C2H3+ carbocation: energetic and vibrational properties for isotopologues](http://pubs.rsc.org/-/content/articlelanding/2016/cp/c6cp04450f#!divAbstract)", _Phys. Chem. Chem. Phys._, __18__, 29395 (2016).  
  * A. B. Pacheco, S. M. Dietrick, P. S. Stevens and S. S. Iyengar, "<a href="http://pubs.acs.org/doi/abs/10.1021/jp212330e">Pump-probe atom-centered density matrix propagation studies to gauge anharmonicity and energy repartitioning in atmospheric reactive adducts: Case study of OH + Isoporene and OH + Butadiene reaction intermediates</a>", <em>J. Phys. Chem. A</em> <strong>116</strong>, 4108 (2012).
  * S. M. Dietrick, A. B. Pacheco, P. S. Stevens and S. S. Iyengar, "<a href="http://pubs.acs.org/doi/abs/10.1021/jp204511v">The influence of water on anharmonicity, stability and vibrational energy distribution of hydrogen-bonded adducts in atmospheric reactions: Case study of the OH + Isoprene reaction intermediate using <i>ab-initio</i> Molecular Dynamics</a>", <em> J. Phys. Chem. A</em> <strong>116</strong>, 399 (2012).
  * A. B. Pacheco and S. S. Iyengar, "<a href="http://jcp.aip.org/resource/1/jcpsa6/v134/i7/p074107_s1">Multi-Stage Ab-initio Quantum Wavepacket Dynamics for Electronic Structure and Dynamics in open systems: Momentum Representation, Coupled Electron Nuclear dynamics and External Fields</a>", <em>J. Chem. Phys.</em> <strong> 134</strong>, 074107 (2011).
