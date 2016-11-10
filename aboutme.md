@@ -35,6 +35,7 @@ title: About Me
  * First Principles Dynamics of Transient Light Absorption and Emission of Alkali Atoms Interacting with Rare Gas Atoms, <i>Ph. D. Thesis</i>, University of Florida (2006). (<a href="https://docs.google.com/open?id=0B8JfYfXf7hnhY2Y4YWY2ZWMtNDQ4ZS00YTg0LWE1NzgtOTQ3OGQzMzRlYjA5">PDF</a>)
 
 ## Conference Presentations
+
 ### Posters
  * A. B. Pacheco and S. S. Iyengar, <i>A Multi-Stage Ab-initio Quantum Wavepacket Dynamics Formalism for Electronic Structure and Dynamics in Open Systems</i>. 42nd MidWest Theoretical Chemistry Conference, West Lafayette, IN (2010). (<a href="https://docs.google.com/open?id=0B8JfYfXf7hnhYTI2ZGZkNjktZGNkMC00NmQ0LTgyOTAtMGJjYTMxZWNlMTFl">Abstract</a>) (<a href="https://docs.google.com/open?id=0B8JfYfXf7hnhMWI3MDk1NWYtNTQzYi00NDUzLWI5ZjYtMDlhODk5YzJlM2Iw">Poster</a>)
  * A. B. Pacheco and S. S. Iyengar, <i>Quantum Wavepacket Ab-initio Molecular Dynamics Formalism for Calculating Electron Transport in Molecular Wires</i>. American Conference on Theoretical Chemistry Conference, Evanston, IL. (2008). (<a href="https://docs.google.com/open?id=0B8JfYfXf7hnhZDdmMjUyOGQtZDA1ZS00ZWVkLTg1YTAtMGRkMTU5OGZjNTMx">Abstract</a>) (<a href="https://docs.google.com/open?id=0B8JfYfXf7hnhNWJlOWJhMjgtZWIzNS00Nzg2LWE0NDMtYWY5NzVkMzlmODcx">Poster</a>)
