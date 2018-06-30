@@ -9,12 +9,12 @@ permalink:        pretty
 title:            Alex Pacheco
 tagline:          
 description:      
-url:              http://www.alexpacheco.net
+url:              https://www.alexpacheco.net
 baseurl:          /
 
 author:
   name:           'Alex Pacheco'
-  url:            http://www.alexpacheco.net
+  url:            https://www.alexpacheco.net
 
 #paginate:         
 
