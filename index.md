@@ -4,9 +4,10 @@ title: Home
 --- 
 
 ##  Alex Pacheco
-I'm currently the Manager of Research Computing at Lehigh University. 
 
-From August 2010 to September 2014, I was a HPC User Services Consultant with HPC@LSU and LONI, helping users with  
+I'm the Associate CIO for Advanced Research Computing at New Jersey Institute of Technology. My division oversees the IT need for Research across campus providing access to High Performance Computing clusters, data storage, cloud computing resources, virtual machines and database servers for the research and academic community at NJIT. 
+
+From September 2014 - July 2022, I was the Manager of Research Computing at Lehigh University. From August 2010 to September 2014, I was a HPC User Services Consultant with HPC@LSU and LONI, helping users with  
 
  * Building codes on HPC clusters.
  * Install and use of software packages on HPC clusters.
@@ -20,11 +21,11 @@ From August 2010 to September 2014, I was a HPC User Services Consultant with HP
 
 ### Contact Me
 
- Location: 8B. East Packer Ave,  
-           Lehigh University,  
-           Bethlehem, PA 18015
+ Location: Guttenberg Information Technologies Center,   
+           New Jersey Insitute of Technology,  
+           Newark, NJ 07102
 
- Voice: (610) 758-6735
+ Voice: (973) 596-2672
 
- eMail: alex.pacheco@lehigh.edu 
+ eMail: alex.pacheco_at_njit.edu 
 
