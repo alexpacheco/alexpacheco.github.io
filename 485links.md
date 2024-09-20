@@ -44,10 +44,12 @@
 14. Congressional Directed Spending
     - [https://www.appropriations.senate.gov/imo/media/doc/LHHS%20FY25%20CDS.pdf](https://www.appropriations.senate.gov/imo/media/doc/LHHS%20FY25%20CDS.pdf)
     - [https://www.booker.senate.gov/imo/media/doc/lhhs_booker_cds_disclosure_24-13.pdf](https://www.booker.senate.gov/imo/media/doc/lhhs_booker_cds_disclosure_24-13.pdf)
-15. AI@NJIT: [https://www.njit.edu/boards/sites/njit.edu.boards/files/Distribution%20of%20Funds%20to%20Support%20AI%20%40%20NJIT%207-25-24.pdf](https://www.njit.edu/boards/sites/njit.edu.boards/files/Distribution%20of%20Funds%20to%20Support%20AI%20%40%20NJIT%207-25-24.pdf)
-16. CITLAR: [https://researchguides.njit.edu/citlar](https://researchguides.njit.edu/citlar)
-17. CASC: [https://casc.org/about/](https://casc.org/about/)
-18. Github: [https://github.com/alexpacheco](https://github.com/alexpacheco)
+15. AI@NJIT:
+    - [https://news.njit.edu/njit-devotes-over-10-million-new-funds-push-artificial-intelligence](https://news.njit.edu/njit-devotes-over-10-million-new-funds-push-artificial-intelligence)
+    - [https://www.njit.edu/boards/sites/njit.edu.boards/files/Distribution%20of%20Funds%20to%20Support%20AI%20%40%20NJIT%207-25-24.pdf](https://www.njit.edu/boards/sites/njit.edu.boards/files/Distribution%20of%20Funds%20to%20Support%20AI%20%40%20NJIT%207-25-24.pdf)
+17. CITLAR: [https://researchguides.njit.edu/citlar](https://researchguides.njit.edu/citlar)
+18. CASC: [https://casc.org/about/](https://casc.org/about/)
+19. Github: [https://github.com/alexpacheco](https://github.com/alexpacheco)
     - [https://github.com/alexpacheco/hpc-training](https://github.com/alexpacheco/hpc-training)
     - [https://github.com/alexpacheco/spackenv](https://github.com/alexpacheco/spackenv)
     - [https://github.com/alexpacheco/lubio](https://github.com/alexpacheco/lubio)
